@@ -34,7 +34,7 @@ export class CartManager{
     }
 
     async getCarts(limit){
-        return await this.readCartsFile().slice(0,limit);
+        return await this.readCartsFile().splice(0,limit);
     }
 
 }

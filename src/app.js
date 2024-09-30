@@ -2,11 +2,10 @@ import express from 'express';
 import prodsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import config from './config.js';
-import { ProductManager } from './ProductManager.js';
-import { CartManager } from './CartManager.js';
+import { CartManager } from './utils/CartManager.js';
 
-const prodManager = new ProductManager('../products.json');
-const cartsManager = new CartManager('../carts.json');
+
+const cartsManager = new CartManager('./carts.json');
 
 
 await cartsManager.init();
