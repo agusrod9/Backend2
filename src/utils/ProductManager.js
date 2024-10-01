@@ -1,5 +1,4 @@
 import fs from 'fs';
-import { incrementLastProductId} from './filesystem.js';
 
 export class ProductManager{
     constructor(file){
@@ -14,7 +13,6 @@ export class ProductManager{
             console.log("productManager_init - new file is being created.");
             await fs.promises.writeFile(this.file, JSON.stringify([]));
         }
-
     };
 
     async readProductsFile(){

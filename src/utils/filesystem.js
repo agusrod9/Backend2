@@ -1,28 +1,35 @@
 import fs from 'fs';
 
-const file = './lastProductId.txt';
+const productsFile = './lastProductId.txt';
+const cartsFile = './lastCartId.txt';
 
 
 export const incrementLastProductId=()=>{
 
-    if(fs.existsSync(file)){
-        let lastProductId = +fs.readFileSync(file, 'utf-8');
+    if(fs.existsSync(productsFile)){
+        let lastProductId = +fs.readFileSync(productsFile, 'utf-8');
         lastProductId++;
-        fs.writeFileSync(file,lastProductId.toString());
+        fs.writeFileSync(productsFile,lastProductId.toString());
         return lastProductId;
     }else{
-        fs.writeFileSync(file,"1"); 
+        fs.writeFileSync(productsFile,"1"); 
         return 1;
     }
 
 };
 
-/*
-export const getLastProductId=()=>{
-    if(fs.existsSync(file)){
-        return +fs.readFileSync(file, 'utf-8');
+export const incrementLastCartId=()=>{
+
+    if(fs.existsSync(cartsFile)){
+        let lastCartId = +fs.readFileSync(cartsFile, 'utf-8');
+        lastCartId++;
+        fs.writeFileSync(cartsFile,lastCartId.toString());
+        return lastCartId;
     }else{
-        return -1;
+        fs.writeFileSync(cartsFile,"1"); 
+        return 1;
     }
-}
-*/
+
+};
+
+
