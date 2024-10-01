@@ -41,7 +41,6 @@ router.post('/:cid/product/:pid', async(req,res)=>{
             qty++;
             carts[index].products[prodIndex].quantity = qty; 
         }else{
-            console.log("NO lo encontro, lo agrego")
             carts[index].products.push({id: pid, quantity:1})
         };
         cartsManager.replaceCart(cid,carts[index]);
