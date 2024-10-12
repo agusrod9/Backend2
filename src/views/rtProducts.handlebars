@@ -20,4 +20,25 @@
     socketClient.on('connect', ()=>{
         console.log(`socket.io Server connected: ${url}`);
     });
+
+    socketClient.on('refreshProducts', prod=>{
+        console.log(`Agregaría ${prod.title}`);
+        let container = document.querySelector(".container");
+        let prodRow = document.createElement('div');
+        prodRow.classList.add('prodRow');
+        let title = document.createElement('h3');
+        title.classList.add('prodRow__title');
+        title.textContent = prod.title;
+        let desc = document.createElement('p');
+        desc.classList.add('prodRow__desc')
+        desc.textContent = prod.description;
+        let price = document.createElement('p');
+        price.classList.add('prodRow__price');
+        price.textContent = `U$S ${prod.price}`;
+        prodRow.appendChild(title);
+        prodRow.appendChild(desc);
+        prodRow.appendChild(price);
+        
+        container.appendChild(prodRow)
+    })
 </script>

@@ -29,13 +29,12 @@ const socketServer = new Server(httpServer);
 
 socketServer.on('connection', socket => {
     console.log(`Client CONNECTION: ${socket.id}`);
-
     socket.on('disconnect', ()=>{
         console.log(`Client DISCONNECTION: ${socket.id}`);
     })
 
     socket.on('newProd', prod => {
-        console.log(`nuevo producto : ${prod}`);
+        console.log(`nuevo producto : ${prod.title}`);
         socketServer.emit('refreshProducts', prod)
     })
 });

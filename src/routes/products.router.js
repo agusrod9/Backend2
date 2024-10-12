@@ -1,9 +1,12 @@
 import { Router } from 'express';
 import { ProductManager } from '../utils/ProductManager.js';
 import { incrementLastProductId } from '../utils/filesystem.js';
+import { io } from 'socket.io-client';
+
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
+const socket = io('http://localhost:8080');
 
 prodManager.init();
 
@@ -43,6 +46,7 @@ router.post('/',async(req, res)=>{
         }
         prodManager.addProduct(newProduct);
         res.status(200).send({ error: null, data: newProduct });
+        socket.emit('newProd',newProduct);
 
     }else{
         res.status(400).send({ error: 'Missing mandatory fields.', data: [] });
