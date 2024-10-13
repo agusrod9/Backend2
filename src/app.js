@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended: true}));
 app.use('/api/products', prodsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/views', viewsRouter);
+app.use(express.static(`${config.dirName}/public`));
 
 app.engine('handlebars', handlebars.engine());
 app.set('views',`${config.dirName}/views`);
@@ -34,7 +35,6 @@ socketServer.on('connection', socket => {
     })
 
     socket.on('newProd', prod => {
-        console.log(`nuevo producto : ${prod.title}`);
         socketServer.emit('refreshProducts', prod)
     })
 });

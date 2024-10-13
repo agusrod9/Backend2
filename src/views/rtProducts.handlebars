@@ -5,12 +5,14 @@
             <h3 class="prodRow__title">{{this.title}}</h3>
             <p class="prodRow__desc">{{this.description}}</p>
             <p class="prodRow__price">U$S {{this.price}}</p>
+            <img class="prodRow__deleteIcon" src="../img/delete.png" alt="">
         </div>
     {{/each}}
 </div>
 
 
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module">
     const url = ''; // vacío para localhost
     const options = {};
@@ -22,7 +24,6 @@
     });
 
     socketClient.on('refreshProducts', prod=>{
-        console.log(`Agregaría ${prod.title}`);
         let container = document.querySelector(".container");
         let prodRow = document.createElement('div');
         prodRow.classList.add('prodRow');
@@ -35,10 +36,21 @@
         let price = document.createElement('p');
         price.classList.add('prodRow__price');
         price.textContent = `U$S ${prod.price}`;
+        let deleteIcon = document.createElement('img');
+        deleteIcon.classList.add('prodRow__deleteIcon');
+        deleteIcon.setAttribute('src', '../img/delete.png');
+
         prodRow.appendChild(title);
         prodRow.appendChild(desc);
         prodRow.appendChild(price);
-        
-        container.appendChild(prodRow)
+        prodRow.appendChild(deleteIcon);
+        container.appendChild(prodRow);
+
+        Swal.fire({
+            position: "top-end",
+            title: `Now available:  ${prod.title}`,
+            showConfirmButton: false,
+            timer: 1800
+        });
     })
 </script>
