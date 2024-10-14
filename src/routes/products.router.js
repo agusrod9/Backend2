@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
-const socket = io('http://localhost:8080');
+
 
 prodManager.init();
 
@@ -37,6 +37,7 @@ router.get('/:pid', async(req,res)=>{
 })
 
 router.post('/',async(req, res)=>{
+    const socket = io('http://localhost:8080');
     if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category')){
 
         if(req.body.hasOwnProperty('thumbnails')){
@@ -82,6 +83,7 @@ router.put('/:pid', async(req,res)=>{
 })
 
 router.delete('/:pid', async(req,res)=>{
+    const socket = io('http://localhost:8080');
     let prods = await prodManager.getProducts();
     let pid = +req.params.pid;
     let index = prods.findIndex(element => element.id===pid);
@@ -91,6 +93,7 @@ router.delete('/:pid', async(req,res)=>{
         prods.splice(index,1);
         prodManager.deleteProduct(prodToDelete);
         res.status(200).send({error: null, data: prodToDelete});
+        socket.emit('dropProd',prodToDelete);
     }else{
         res.status(404).send({ error: 'Product not found.', data: [] });
     }

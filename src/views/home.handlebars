@@ -1,13 +1,44 @@
 <div class="container">
     <h1>Products List</h1>
     {{#each products}}
-        <div class="prodRow">
+        <div class="prodRow" id="{{this.id}}">
             <h3 class="prodRow__title">{{this.title}}</h3>
             <p class="prodRow__desc">{{this.description}}</p>
             <p class="prodRow__price">U$S {{this.price}}</p>
-            <img class="prodRow__deleteIcon" src="img/delete.png" alt="">
+            <img class="prodRow__deleteIcon" src="../img/delete.png" alt="">
         </div>
     {{/each}}
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+
+    //Para modificar una vez deployado
+    const url = '';
+
+    let deleteIcons = document.querySelectorAll('.prodRow__deleteIcon');
+    for(let i=0; i<deleteIcons.length;i++){
+        deleteIcons[i].addEventListener('click', ()=>{
+            let prodId= deleteIcons[i].parentElement.id;
+            fetch(`${url}/api/products/${prodId}`, {
+                method: 'DELETE',
+                body: '',
+                headers: {
+                    "Content-type":"application/json"
+                }
+            });
+            let  prodRow = document.getElementById(`${prodId}`);
+            Swal.fire({
+                position: "top-end",
+                title: `Removed`,
+                showConfirmButton: false,
+                timer: 1800
+            });
+            prodRow.remove();
+            })
+    }
+
+
+
+</script>

@@ -35,7 +35,11 @@ socketServer.on('connection', socket => {
     })
 
     socket.on('newProd', prod => {
-        socketServer.emit('refreshProducts', prod)
+        socketServer.emit('refreshNewProd', prod)
+    })
+
+    socket.on('dropProd', prod =>{
+        socketServer.emit('refreshDropProduct', prod)
     })
 });
 
