@@ -24,8 +24,9 @@ Comentarios:
 -BAJA DE PRODUCTO -> Continúa disponible desde el server http, pero para esta entrega se agregan botones en vistas /view y /realtimeproducts para probar la funcionalidad desde ahí también.
 
 
-Pre-entrega 3
+ENTREGA FINAL
 
 Comentarios:
+
 -Implemento bd MongoDB
 -Implemento conexión mediante Mongoose.
