@@ -2,6 +2,7 @@
 
 Programación Backend I: Desarrollo Avanzado de Backend
 #70275
+
 Pre-entrega 1
 
 Comentarios:
@@ -21,3 +22,10 @@ Comentarios:
 -La vista /realtimeproducts implementa websockets, por lo que se visualiza e tiempo real el alta y baja de productos.
 -ALTA DE PRODUCTO -> Continúa disponible desde el server http únicamente, es necesario utilizar Postman para probar la funcionalidad.
 -BAJA DE PRODUCTO -> Continúa disponible desde el server http, pero para esta entrega se agregan botones en vistas /view y /realtimeproducts para probar la funcionalidad desde ahí también.
+
+
+Pre-entrega 3
+
+Comentarios:
+-Implemento bd MongoDB
+-Implemento conexión mediante Mongoose.

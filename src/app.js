@@ -5,6 +5,7 @@ import config from './config.js';
 import handlebars from 'express-handlebars';
 import viewsRouter from './routes/views.router.js';
 import {Server} from 'socket.io';
+import mongoose from 'mongoose';
 
 const app = express();
 const port = config.port;
@@ -22,8 +23,14 @@ app.set('views',`${config.dirName}/views`);
 app.set('view engine', 'handlebars');
 
 
-const httpServer = app.listen(port, ()=>{
-    console.log(`Listening on Port ${port}`);
+const httpServer = app.listen(port, async ()=>{
+    try{
+        await mongoose.connect(config.mongoURI_remote)
+        console.log(`Listening on Port ${port}`);
+    }catch{
+        console.log("Couldn't connect with DataBase.")
+        process.exit;
+    }
 })
 
 const socketServer = new Server(httpServer);

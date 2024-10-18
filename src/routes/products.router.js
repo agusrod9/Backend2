@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ProductManager } from '../utils/ProductManager.js';
 import { incrementLastProductId } from '../utils/filesystem.js';
 import { io } from 'socket.io-client';
-
+import producstModel from '../dao/models/products.model.js';
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
@@ -14,6 +14,7 @@ prodManager.init();
 router.get('/', async(req,res)=>{
 
     let prods = await prodManager.getProducts();
+    //let prodsFromDb = await producstModel.find().lean();
     if(req.query.limit!=null){
         let limit = +req.query.limit;
         prods = prods.slice(0,limit);
