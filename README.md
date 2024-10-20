@@ -30,3 +30,4 @@ Comentarios:
 
 -Implemento bd MongoDB
 -Implemento conexión mediante Mongoose.
+-Mantengo funcionalidad de lectura y escritura de archivos comentada, se descomenta y se utiliza BD o Files
