@@ -1,11 +1,12 @@
 <div class="container">
     <h1>Real Time Products List</h1>
     {{#each products}}
-        <div class="prodRow" id="{{this.id}}">
+        <div class="prodRow" id="{{this._id}}">
             <h3 class="prodRow__title">{{this.title}}</h3>
             <p class="prodRow__desc">{{this.description}}</p>
             <p class="prodRow__price">U$S {{this.price}}</p>
             <img class="prodRow__deleteIcon" src="../img/delete.png" alt="">
+            <img class="prodRow__cartIcon" src="../img/cart.png" alt="">
         </div>
     {{/each}}
 </div>
@@ -38,11 +39,19 @@
         })
     }
 
+    let cartIcons = document.querySelectorAll('.prodRow__cartIcon');
+    for(let i=0; i<cartIcons.length;i++){
+        cartIcons[i].addEventListener('click', ()=>{
+            let prodId= cartIcons[i].parentElement.id;
+            console.log(`Agrego producto al carrito: ${prodId}`);
+        })
+    }
+
     socketClient.on('refreshNewProd', prod=>{
         let container = document.querySelector(".container");
         let prodRow = document.createElement('div');
         prodRow.classList.add('prodRow');
-        prodRow.setAttribute('id', prod.id)
+        prodRow.setAttribute('id', prod._id)
         let title = document.createElement('h3');
         title.classList.add('prodRow__title');
         title.textContent = prod.title;
@@ -64,12 +73,20 @@
                     "Content-type":"application/json"
                 }
             });
+        });
+        let cartIcon = document.createElement('img');
+        cartIcon.classList.add('prodRow__cartIcon');
+        cartIcon.setAttribute('src', '../img/cart.png');
+        cartIcon.addEventListener('click', ()=>{
+            let prodId= cartIcon.parentElement.id;
+            console.log(`Agrego producto al carrito: ${prodId}`);
         })
 
         prodRow.appendChild(title);
         prodRow.appendChild(desc);
         prodRow.appendChild(price);
         prodRow.appendChild(deleteIcon);
+        prodRow.appendChild(cartIcon);
         container.appendChild(prodRow);
 
         Swal.fire({
@@ -81,7 +98,7 @@
     })
 
     socketClient.on('refreshDropProduct', prod=>{
-        let  prodRow = document.getElementById(`${prod.id}`);
+        let  prodRow = document.getElementById(`${prod._id}`);
         Swal.fire({
             position: "top-end",
             title: `Removed:  ${prod.title}`,

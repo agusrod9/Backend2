@@ -13,7 +13,7 @@ h1{
 
 .container{
   background-color: transparent;
-  width: 1000px;
+  width: 1200px;
   display: flex;
   flex-direction: column;
 }
@@ -22,7 +22,7 @@ h1{
   user-select: none;
   background-color: #697565;
   display: grid;
-  grid-template-columns: 2fr 5fr 0.5fr 0.5fr;
+  grid-template-columns: 2fr 5fr 0.5fr 0.5fr 0.5fr;
   justify-content: left;
   align-items: center;
   border-bottom: 1px solid #697565;
@@ -36,6 +36,13 @@ h1{
 }
 
 .prodRow__deleteIcon{
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.prodRow__cartIcon{
   width: 30px;
   height: 30px;
   object-fit: contain;

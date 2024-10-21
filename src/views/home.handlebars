@@ -1,19 +1,20 @@
 <div class="container">
     <h1>Products List</h1>
     {{#each products}}
-        <div class="prodRow" id="{{this.id}}">
+        <div class="prodRow" id="{{this._id}}">
             <h3 class="prodRow__title">{{this.title}}</h3>
             <p class="prodRow__desc">{{this.description}}</p>
             <p class="prodRow__price">U$S {{this.price}}</p>
             <img class="prodRow__deleteIcon" src="../img/delete.png" alt="">
+            <img class="prodRow__cartIcon" src="../img/cart.png" alt="">
         </div>
     {{/each}}
 </div>
 
 
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module">
-
     //Para modificar una vez deployado
     const url = '';
 
@@ -37,6 +38,14 @@
             });
             prodRow.remove();
             })
+    }
+
+    let cartIcons = document.querySelectorAll('.prodRow__cartIcon');
+    for(let i=0; i<cartIcons.length;i++){
+        cartIcons[i].addEventListener('click', ()=>{
+            let prodId= cartIcons[i].parentElement.id;
+            console.log(`Agrego producto al carrito: ${prodId}`);
+        })
     }
 
 

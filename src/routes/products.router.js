@@ -10,41 +10,31 @@ const prodManager = new ProductManager('./products.json');
 prodManager.init();
 
 router.get('/', async(req,res)=>{
-    //getAllProductsFromFile(req,res);
+    //getAllProductsFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
     getAllProductsFromDB(req, res);
     
 });
 
 router.get('/:pid', async(req,res)=>{
-    //getProductByIdFromFile(req,res)
+    //getProductByIdFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos 
     getProductByIdFromDB(req,res);
     
 })
 
 router.post('/',async(req, res)=>{
     const socket = io('http://localhost:8080');
-    if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category')){
-        let newProduct={};
-        if(req.body.hasOwnProperty('thumbnails')){
-            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: req.body.thumbnails};
-        }else{
-            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: []}
-        }
-        //insertProductFS(newProduct,res,socket);
-        insertProductBD(newProduct,res,socket);
-    }else{
-        res.status(400).send({ error: 'Missing mandatory fields.', data: [] });
-    }
+    //insertProductFS(req,res,socket); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
+    insertProductBD(req,res,socket);
 })
 
 router.put('/:pid', async(req,res)=>{
-    //updateProductFS(req,res);
+    //updateProductFS(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
     updateProductBD(req,res);
 })
 
 router.delete('/:pid', async(req,res)=>{
     const socket = io('http://localhost:8080');
-    //deleteProductFS(req,res,socket);
+    //deleteProductFS(req,res,socket); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
     deleteProductBD(req,res,socket);
 })
 
@@ -99,20 +89,42 @@ const getProductByIdFromFile=async(req, res)=>{
     }
 }
 
-const insertProductBD = async(product, res, socket)=>{
-    let process = await producstModel.create(product);
-    if(process){
-        res.status(200).send({ error: null, data: process});
-        socket.emit('newProd',process);
+const insertProductBD = async(req, res, socket)=>{
+    if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category')){
+        let newProduct={};
+        if(req.body.hasOwnProperty('thumbnails')){
+            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: req.body.thumbnails};
+        }else{
+            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: []}
+        }
+        let process = await producstModel.create(newProduct);
+        if(process){
+            res.status(200).send({ error: null, data: process});
+            socket.emit('newProd',process);
+        }else{
+            res.status(500).send({ error: 'Internal Server Error', data: []});
+        }
     }else{
-        res.status(500).send({ error: 'Internal Server Error', data: []});
+        res.status(400).send({ error: 'Missing mandatory fields.', data: [] });
     }
+
 }
 
-const insertProductFS = async(product, res, socket)=>{
-    prodManager.addProduct(product);
-    res.status(200).send({ error: null, data: product});
-    socket.emit('newProd',product);
+const insertProductFS = async(req, res, socket)=>{
+    if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category')){
+        let newProduct={};
+        if(req.body.hasOwnProperty('thumbnails')){
+            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: req.body.thumbnails};
+        }else{
+            newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: []}
+        }
+        prodManager.addProduct(newProduct);
+        res.status(200).send({ error: null, data: newProduct});
+        socket.emit('newProd',newProduct);
+    }else{
+        res.status(400).send({ error: 'Missing mandatory fields.', data: [] });
+    }
+    
 }
 
 const updateProductBD = async(req,res)=>{
@@ -123,7 +135,6 @@ const updateProductBD = async(req,res)=>{
         let updated = req.body;
         let options = {new: true}; // para que retorne el objeto nuevo, no el original. Así visualizo el cambio en el response.
         let process = await producstModel.findOneAndUpdate(filter, updated, options);
-        
         if(process){
             res.status(200).send({error: null, data: process});
         }else{
