@@ -21,6 +21,10 @@ router.get('/realtimeproducts', async(req, res)=>{
     res.status(200).render('rtProducts', {products});
 })
 
+router.get('/cart', async(req,res)=>{
+    let cart = {};
+    res.status(200).render('cart', {cart});
+})
 
 
 export default router;

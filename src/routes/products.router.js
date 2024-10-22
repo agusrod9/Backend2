@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
-prodManager.init();
+//prodManager.init();  //Descomentar para utilizar FS
 
 router.get('/', async(req,res)=>{
     //getAllProductsFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
@@ -99,7 +99,7 @@ const insertProductBD = async(req, res, socket)=>{
         }
         let process = await producstModel.create(newProduct);
         if(process){
-            res.status(200).send({ error: null, data: process});
+            res.status(201).send({ error: null, data: process});
             socket.emit('newProd',process);
         }else{
             res.status(500).send({ error: 'Internal Server Error', data: []});
@@ -119,7 +119,7 @@ const insertProductFS = async(req, res, socket)=>{
             newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: []}
         }
         prodManager.addProduct(newProduct);
-        res.status(200).send({ error: null, data: newProduct});
+        res.status(201).send({ error: null, data: newProduct});
         socket.emit('newProd',newProduct);
     }else{
         res.status(400).send({ error: 'Missing mandatory fields.', data: [] });

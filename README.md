@@ -29,3 +29,4 @@ Comentarios:
 -Implemento bd MongoDB, con las colecciones users, carts y products. Un documento de carts sería la asociación de 1 user a N products.<br>
 -Implemento conexión mediante Mongoose.<br>
 -Mantengo funcionalidad de lectura y escritura de archivos comentada, se descomenta y se puede utilizar alternando con la base de datos.<br>
+-Implemento cambio en los carts para que esten asociados a un user al crearlos vacios. obeniendo user como parámetro en la query. Para el Filesystem no lo implemento. <br>
