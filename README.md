@@ -16,17 +16,17 @@ Pre-entrega 2
 
 Comentarios:
 
--Se agregan las vistas /view y /realtimeproducts
--La vista /realtimeproducts implementa websockets, por lo que se visualiza e tiempo real el alta y baja de productos.
--ALTA DE PRODUCTO -> Continúa disponible desde el server http únicamente, es necesario utilizar Postman para probar la funcionalidad.
--BAJA DE PRODUCTO -> Continúa disponible desde el server http, pero para esta entrega se agregan botones en vistas /view y /realtimeproducts para probar la funcionalidad desde ahí también.
+-Se agregan las vistas /view y /realtimeproducts<br>
+-La vista /realtimeproducts implementa websockets, por lo que se visualiza e tiempo real el alta y baja de productos.<br>
+-ALTA DE PRODUCTO -> Continúa disponible desde el server http únicamente, es necesario utilizar Postman para probar la funcionalidad.<br>
+-BAJA DE PRODUCTO -> Continúa disponible desde el server http, pero para esta entrega se agregan botones en vistas /view y /realtimeproducts para probar la funcionalidad desde ahí también.<br>
 
 
 ENTREGA FINAL
 
 Comentarios:
 
--Implemento bd MongoDB, con las colecciones users, carts y products. Un documento de carts sería la asociación de 1 user a N products.
--Implemento conexión mediante Mongoose.
--Mantengo funcionalidad de lectura y escritura de archivos comentada, se descomenta y se puede utilizar alternando con la base de datos.
+-Implemento bd MongoDB, con las colecciones users, carts y products. Un documento de carts sería la asociación de 1 user a N products.<br>
+-Implemento conexión mediante Mongoose.<br>
+-Mantengo funcionalidad de lectura y escritura de archivos comentada, se descomenta y se puede utilizar alternando con la base de datos.<br>
 -
