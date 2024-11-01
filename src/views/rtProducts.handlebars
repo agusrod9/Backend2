@@ -18,7 +18,6 @@
     
     const url = ''; // vacío para localhost
     const options = {};
-
     const socketClient = io(url, options);
 
     socketClient.on('connect', ()=>{
@@ -44,6 +43,15 @@
         cartIcons[i].addEventListener('click', ()=>{
             let prodId= cartIcons[i].parentElement.id;
             console.log(`Agrego producto al carrito: ${prodId}`);
+            
+            /*fetch(`${url}/api/carts/${cartId}`, {
+                method: 'PUT',
+                body: {"_id" : ${prodId} },
+                headers: {
+                    "Content-type":"application/json"
+                }
+            });
+            */
         })
     }
 

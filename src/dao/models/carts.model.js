@@ -6,8 +6,8 @@ mongoose.pluralize(null);
 const collection = 'carts';
 
 const schema = new mongoose.Schema({
-    userId :  {type: Schema.Types.ObjectId, ref: 'users'},
-    productList : [{type: Schema.Types.ObjectId, ref: 'products'}],
+    userId :  {type: Schema.Types.ObjectId, ref: 'users', required: true},
+    productList : {type: [{prodId: Schema.Types.ObjectId, qty : Number}], ref: 'products', required: true},
     totalAmount : {type: Number, required: true},
     purchased: {type: Boolean, required: true},
     purchaseDate : {type: Date}
