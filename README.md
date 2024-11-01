@@ -30,3 +30,5 @@ Comentarios:
 -Implemento conexión mediante Mongoose.<br>
 -Mantengo funcionalidad de lectura y escritura de archivos comentada, se descomenta y se puede utilizar alternando con la base de datos.<br>
 -Implemento cambio en los carts para que esten asociados a un user al crearlos vacios. obeniendo user como parámetro en la query. Para el Filesystem no lo implemento. <br>
+-Implemento endopint para el put de producto al carrito. Recibe productId en el body y si ya existe en el carrito le suma 1 a la qty, sinó lo agrega con qty:1 . <br>
+-Implemento botón de agregar al carrito en cada producto de Las listas de productos, la realtime y la básica.<br>

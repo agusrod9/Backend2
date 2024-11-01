@@ -45,6 +45,18 @@
         cartIcons[i].addEventListener('click', ()=>{
             let prodId= cartIcons[i].parentElement.id;
             console.log(`Agrego producto al carrito: ${prodId}`);
+            fetch(`${url}/api/carts`)
+                .then(res=>res.json())
+                .then(data=>{
+                    let cartId = data.data[0]._id;
+                    fetch(`${url}/api/carts/${cartId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({"_id" : prodId}),
+                        headers: {
+                        "Content-type":"application/json"
+                        }
+                    });
+                });
         })
     }
 
