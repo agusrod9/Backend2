@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { ProductManager } from '../utils/ProductManager.js';
-import producstModel from '../dao/models/products.model.js';
+import productsModel from '../dao/models/products.model.js';
+import cartsModel from '../dao/models/carts.model.js';
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
@@ -10,19 +11,20 @@ const prodManager = new ProductManager('./products.json');
 
 router.get('/', async(req, res)=>{
     //const products = await prodManager.getProducts();
-    let products = await producstModel.find().lean();
+    let products = await productsModel.find().lean();
     res.status(200).render('home', {products})
 })
 
 
 router.get('/realtimeproducts', async(req, res)=>{
     //const products = await prodManager.getProducts();
-    let products = await producstModel.find().lean();
+    let products = await productsModel.find().lean();
     res.status(200).render('rtProducts', {products});
 })
 
-router.get('/cart', async(req,res)=>{
-    let cart = {};
+router.get('/cart:cid', async(req,res)=>{
+    let cid = req.params.cid;
+    let cart = await cartsModel.find({_id: cid}).populate({path: 'productList._id', model: productsModel}).lean();
     res.status(200).render('cart', {cart});
 })
 

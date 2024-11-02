@@ -2,24 +2,26 @@ import { Router } from 'express';
 import { ProductManager } from '../utils/ProductManager.js';
 import { incrementLastProductId } from '../utils/filesystem.js';
 import { io } from 'socket.io-client';
-import producstModel from '../dao/models/products.model.js';
+import productsModel from '../dao/models/products.model.js';
 import mongoose from "mongoose";
 
 const router = Router();
 const prodManager = new ProductManager('./products.json');
 //prodManager.init();  //Descomentar para utilizar FS
 
-router.get('/', async(req,res)=>{
-    //getAllProductsFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
-    getAllProductsFromDB(req, res);
-    
-});
-
 router.get('/:pid', async(req,res)=>{
     //getProductByIdFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos 
     getProductByIdFromDB(req,res);
     
 })
+
+router.get('/:limit?:page?:sort?:qry?', async(req,res)=>{
+    //getAllProductsFromFile(req,res); //--> Comentado para que ejecute solamente los métodos de Bases de Datos
+    //getAllProductsFromDB(req, res);
+    getAllProductsFromDbByPage(req,res);
+    
+});
+
 
 router.post('/',async(req, res)=>{
     const socket = io('http://localhost:8080');
@@ -42,12 +44,13 @@ router.delete('/:pid', async(req,res)=>{
 //----> Métodos, para mantener ambos comportamientos de utilizar filesystem o database
 
 const getAllProductsFromDB=async(req, res)=>{
-    let prodsFromDb = await producstModel.find().lean();
+    
     if(req.query.limit!=null){
         let limit = +req.query.limit;
-        prodsFromDb = prodsFromDb.slice(0,limit);
+        let prodsFromDb = await productsModel.find().lean().limit(limit);
         res.status(200).send({error: null , data: prodsFromDb});
     }else{
+        let prodsFromDb = await productsModel.find().lean();
         res.status(200).send({error: null , data: prodsFromDb});
     }
 }
@@ -67,7 +70,7 @@ const getProductByIdFromDB=async(req,res)=>{
     let pid = req.params.pid
     if(mongoose.isObjectIdOrHexString(pid)){
         let idObj = {_id: pid};
-        let process = await producstModel.findById(idObj);
+        let process = await productsModel.findById(idObj);
         if(process){
             res.status(200).send({error: null , data: process});
         }else{
@@ -97,7 +100,7 @@ const insertProductBD = async(req, res, socket)=>{
         }else{
             newProduct = {id : incrementLastProductId(), title: req.body.title, description: req.body.description, code: req.body.code, price: req.body.price, status: true, stock: req.body.stock, category: req.body.category, thumbnails: []}
         }
-        let process = await producstModel.create(newProduct);
+        let process = await productsModel.create(newProduct);
         if(process){
             res.status(201).send({ error: null, data: process});
             socket.emit('newProd',process);
@@ -134,7 +137,7 @@ const updateProductBD = async(req,res)=>{
     if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category') && req.body.hasOwnProperty('thumbnails') && req.body.hasOwnProperty('status')){
         let updated = req.body;
         let options = {new: true}; // para que retorne el objeto nuevo, no el original. Así visualizo el cambio en el response.
-        let process = await producstModel.findOneAndUpdate(filter, updated, options);
+        let process = await productsModel.findOneAndUpdate(filter, updated, options);
         if(process){
             res.status(200).send({error: null, data: process});
         }else{
@@ -177,7 +180,7 @@ const deleteProductBD=async(req,res, socket)=>{
     if(mongoose.isObjectIdOrHexString(pid)){
         let idObj = {_id: pid};
         let options = {new: true};
-        let process = await producstModel.findOneAndDelete(idObj, options)
+        let process = await productsModel.findOneAndDelete(idObj, options)
         if(process){
             res.status(200).send({error: null , data: process});
             socket.emit('dropProd',process);
@@ -202,6 +205,34 @@ const deleteProductFS=async(req,res, socket)=>{
         socket.emit('dropProd',prodToDelete);
     }else{
         res.status(404).send({ error: 'Product not found.', data: [] });
+    }
+}
+
+const getAllProductsFromDbByPage = async(req,res)=>{
+    let page = +req.query.page || 1;
+    let limit = +req.query.limit || 10;
+    let process = null;
+    if(req.query.sort){
+        let sort = req.query.sort;
+        if(req.query.qry){
+            let qry = req.query.qry;
+            process = await productsModel.paginate({title:{$regex: '.*' + qry + '.*'}},{limit:limit, page:page, sort: {price: sort}, lean:true});
+        }else{
+            process = await productsModel.paginate({},{limit:limit, page:page, sort: {price: sort}, lean:true});
+        }
+    }else{
+        if(req.query.qry){
+            let qry = req.query.qry;
+            process = await productsModel.paginate({title:{$regex: '.*' + qry + '.*'}},{limit:limit, page:page, lean:true});
+        }else{
+            process = await productsModel.paginate({},{limit:limit, page:page, lean:true});
+        }
+    }
+
+    if(process){
+        res.status(200).send({error: null , data: process});
+    }else{
+        res.status(500).send({ error: 'Internal Server Error.', data: [] });
     }
 }
 

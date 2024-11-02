@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
 
 
 mongoose.pluralize(null);
@@ -15,6 +16,8 @@ const schema = new mongoose.Schema({
     category : {type: String, required: true},
     thumbnails : {type: Array}
 });
+
+schema.plugin(mongoosePaginate);
 
 const model = new mongoose.model(collection,schema);
 

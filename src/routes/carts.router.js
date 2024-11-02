@@ -2,26 +2,27 @@ import { Router } from 'express';
 import { CartManager } from '../utils/CartManager.js';
 import { incrementLastCartId } from '../utils/filesystem.js';
 import cartsModel from '../dao/models/carts.model.js';
+import productsModel from '../dao/models/products.model.js'
 import mongoose from "mongoose";
 
 const router = Router();
 const cartsManager = new CartManager('./carts.json');
 
 //await cartsManager.init(); //Descomentar para utilizar FS
-
-router.get('/:cid', async(req,res)=>{
-    //getCartByIdFS(req,res);
-    getCartByIdBD(req,res);
-});
-
 router.get('/', async(req,res)=>{
-    let process = await cartsModel.find().lean();
+    let process = await cartsModel.find().populate({path: 'productList._id', model: productsModel}).lean();
     if(process){
         res.status(200).send({error: null , data: process});
     }else{
         res.status(404).send({ error: 'No Cart found.', data: [] });
     }
 })
+
+router.get('/:cid', async(req,res)=>{
+    //getCartByIdFS(req,res);
+    getCartByIdBD(req,res);
+});
+
 
 router.post('/', async(req,res)=>{
     //insertCartFS(res);
@@ -68,6 +69,22 @@ router.put('/:cid', async(req,res)=>{
     }
 });
 
+
+router.delete('/:cid', async(req,res)=>{
+    let cid = req.params.cid;
+    if(mongoose.isObjectIdOrHexString(cid)){
+        let idObj = {_id: cid};
+        let process = await cartsModel.findOneAndDelete(idObj)
+        if(process){
+            res.status(200).send({error: null , data: process});
+        }else{
+            res.status(404).send({ error: 'Cart not found.', data: [] });
+        }
+    }else{
+        res.status(400).send({ error: 'Cart Id must be a 24 character hex string.', data: [] });
+    }
+})
+
 //----> Métodos, para mantener ambos comportamientos de utilizar filesystem o database
 
 const getCartByIdFS= async(req,res)=>{
@@ -86,7 +103,7 @@ const getCartByIdBD= async(req,res)=>{
     let cid = req.params.cid;
     if(mongoose.isObjectIdOrHexString(cid)){
         let idObj = {_id: cid};
-        let process = await cartsModel.findById(idObj);
+        let process = await cartsModel.findById(idObj).populate({path: 'productList._id', model: productsModel}).lean();
         if(process){
             res.status(200).send({error: null , data: process});
         }else{
