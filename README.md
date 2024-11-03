@@ -35,3 +35,5 @@ Comentarios:
 -Implemento requermientos en el get de products: limit, page, query, sort . <br>
 -Implemento paginación. <br>
 -Implemento la vista cart, donde despliega los productos que hay en un carrito dado (por id de carrito).<br>
+-Agrego botón para navegar a ver el cart, desde las listas de Productos <br>
+

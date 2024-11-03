@@ -68,3 +68,30 @@ h1{
 #price, #qty{
   text-align: right;
 }
+
+.goToCartAnchor{
+  align-self: flex-end;
+  text-decoration: none;
+}
+
+.goToCart{
+  background-color: #697565;
+  border: 1px solid #ECDFCC;
+  border-radius: 15px;
+  width: 90px;
+  height: 70px;
+  color: #ECDFCC;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-family: "Montserrat", "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+}
+
+.goToCart img{
+  height: 30px;
+  width: 30px;
+  margin: 10px
+}

@@ -1,5 +1,11 @@
 <div class="container">
     <h1>Real Time Products List</h1>
+    <a class="goToCartAnchor" href="cart">
+        <div class="goToCart">
+            <img src="../img/cart.png" alt="cart">
+            <p>Go to cart</p>
+        </div>
+    </a>
     {{#each products}}
         <div class="prodRow" id="{{this._id}}">
             <h3 class="prodRow__title">{{this.title}}</h3>
@@ -23,6 +29,11 @@
     socketClient.on('connect', ()=>{
         console.log(`socket.io Server connected: ${url}`);
     });
+
+    let goToCartBtn = document.querySelector('.goToCart');
+    goToCartBtn.addEventListener('click',()=>{
+
+    })
 
     let deleteIcons = document.querySelectorAll('.prodRow__deleteIcon');
     for(let i=0; i<deleteIcons.length;i++){

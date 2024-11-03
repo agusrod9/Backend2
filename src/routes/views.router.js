@@ -28,5 +28,11 @@ router.get('/cart:cid', async(req,res)=>{
     res.status(200).render('cart', {cart});
 })
 
+router.get('/cart', async(req,res)=>{
+    //funciona porque mi modelo sería con un cart siempre. al comprarlo o borrarlo se borra. Nunca hay más de uno.
+    let cart = await cartsModel.find().populate({path: 'productList._id', model: productsModel}).lean(); 
+    res.status(200).render('cart', {cart});
+})
+
 
 export default router;
