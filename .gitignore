@@ -2,3 +2,4 @@ node_modules/
 carts.json
 products.json
 lastProductId.txt
+.env

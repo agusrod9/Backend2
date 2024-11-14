@@ -6,17 +6,24 @@ import handlebars from 'express-handlebars';
 import viewsRouter from './routes/views.router.js';
 import {Server} from 'socket.io';
 import mongoose from 'mongoose';
+import "dotenv/config.js"
+import morgan from 'morgan';
+import pathHandler from './middlewares/pathHandler.mid.js';
+import errorHandler from './middlewares/errorHandler.mid.js';
 
 const app = express();
-const port = config.port;
+const port = process.env.PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
+app.use(express.static(`${config.dirName}/public`));
+app.use(morgan("dev"));
 app.use('/api/products', prodsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/views', viewsRouter);
-app.use(express.static(`${config.dirName}/public`));
+app.use(pathHandler);
+app.use(errorHandler)
+
 
 app.engine('handlebars', handlebars.engine());
 app.set('views',`${config.dirName}/views`);
@@ -25,10 +32,10 @@ app.set('view engine', 'handlebars');
 
 const httpServer = app.listen(port, async ()=>{
     try{
-        await mongoose.connect(config.mongoURI_remote)
+        await mongoose.connect(process.env.MONGO_REMOTE_URI)
         console.log(`Listening on Port ${port}`);
     }catch{
-        console.log("Couldn't connect with DataBase.")
+        console.log("Could not connect with DataBase.")
         process.exit;
     }
 })
