@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { ProductManager } from '../utils/ProductManager.js';
+import { productManager } from '../utils/productManager.js';
 import { incrementLastProductId } from '../utils/filesystem.js';
 import { io } from 'socket.io-client';
 import productsModel from '../dao/models/products.model.js';
 import mongoose from "mongoose";
 
 const router = Router();
-const prodManager = new ProductManager('./products.json');
+const prodManager = new productManager('./products.json');
 //prodManager.init();  //Descomentar para utilizar FS
 
 router.get('/:pid', async(req,res)=>{

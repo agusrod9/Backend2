@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { CartManager } from '../utils/CartManager.js';
+import { cartManager } from '../utils/cartManager.js';
 import { incrementLastCartId } from '../utils/filesystem.js';
 import cartsModel from '../dao/models/carts.model.js';
 import productsModel from '../dao/models/products.model.js'
 import mongoose from "mongoose";
 
 const router = Router();
-const cartsManager = new CartManager('./carts.json');
+const cartsManager = new cartManager('./carts.json');
 
 //await cartsManager.init(); //Descomentar para utilizar FS
 router.get('/', async(req,res)=>{

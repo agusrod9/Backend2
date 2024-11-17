@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class CartManager{
+export class cartManager{
     constructor(file){
         this.file = file;
     }

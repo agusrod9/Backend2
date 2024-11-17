@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export class ProductManager{
+export class productManager{
     constructor(file){
         this.file = file;
     };

@@ -8,3 +8,6 @@ Pre-entrega 1 - Continuando con el [proyecto de Backend 1](https://github.com/ag
 Comentarios: <br>
 -Implemento dotenv y migro puerto y uris de Mongo a un .env <br>
 -Implemento pathHandler y errorHandler<br>
+-Implemento userModel y userManager <br>
+-Implemento enrutador de cookies y enrutador de sessions <br>
+-Implemento session con connect-mongo (A REEMPLAZAR LUEGO CON JWT cuando lo veamos en clase) <br>
