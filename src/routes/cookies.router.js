@@ -2,13 +2,12 @@ import { Router } from "express";
 
 const cookiesRouter = Router();
 
-
 cookiesRouter.post('/set', (req, res, next)=>{
     try {
         const message = 'COOKIE SET'
         return res
                 .status(200)
-                .cookie("clave", "valor")
+                .cookie("clave", "valor") //console.log(cookies["clave"])
                 .cookie("cookieTemporal", "valorTemporal", {maxAge: 10000})
                 .json({message});
     } catch (error) {
@@ -28,7 +27,7 @@ cookiesRouter.get('/get', (req, res, next)=>{
     }
 });
 
-cookiesRouter.delete('/delete:toDelete', (req,res,next)=>{
+cookiesRouter.delete('/delete', (req,res,next)=>{
     try {
         const {toDelete} = req.query;
         const message = 'COOKIE DELETED';
