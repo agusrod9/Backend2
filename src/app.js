@@ -17,8 +17,8 @@ import pathHandler from './middlewares/pathHandler.mid.js';
 import errorHandler from './middlewares/errorHandler.mid.js';
 
 
-//Environment vars
-const {PORT, MONGO_REMOTE_URI} = process.env
+//Environment variables
+const {PORT, MONGO_REMOTE_URI, COOKIES_SECRET, SESSION_SECRET} = process.env
 
 //Server Instance
 const app = express();
@@ -32,10 +32,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(`${config.dirName}/public`));
 app.use(morgan("dev"));
-app.use(cookieParser());
+app.use(cookieParser(COOKIES_SECRET));
 app.use(session({
     name: "sessionCookie",
-    secret: "process.env.SECRET_SESSION",
+    secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({mongoUrl: MONGO_REMOTE_URI, ttl: 60*60*24})

@@ -3,7 +3,7 @@ import passport from "passport";
 
 const sessionsRouter = Router();
 
-sessionsRouter.post('/signup', async(req, res, next)=>{
+sessionsRouter.post('/register', async(req, res, next)=>{
     try {
         
     } catch (error) {

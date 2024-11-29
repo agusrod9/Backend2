@@ -11,7 +11,7 @@ const schema = new mongoose.Schema({
     email : {type: String, required: true, index: true},
     role : {type: String, default: 'USER', enum:['USER','ADMIN','PREM']},
     verifiedUser: {type: Boolean, default: false},
-    verificationCode: {type: String, default:"NotVerified"}
+    verificationCode: {type: String}
 });
 
 const model = new mongoose.model(collection,schema);
