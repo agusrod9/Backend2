@@ -12,27 +12,25 @@ cookiesRouter.post('/set', (req, res, next)=>{
                 .cookie("cookieTemporal", "valorTemporal", {maxAge: 10000})
                 .json({message});
     } catch (error) {
-        return next(error)
+        return next(error);
     }
-})
+});
 
 cookiesRouter.get('/get', (req, res, next)=>{
     try {
         const cookies = req.cookies;
-        console.log(cookies);
-        console.log(cookies["clave"]);
-        const message = 'COOKIE READ';
+        const message = 'COOKIES READ';
         return res
                 .status(200)
-                .json({message});
+                .json({message, cookies})
     } catch (error) {
-        return next(error)
+        return next(error);
     }
-})
+});
 
-cookiesRouter.delete('/delete/:toDelete', (req,res,next)=>{
+cookiesRouter.delete('/delete:toDelete', (req,res,next)=>{
     try {
-        const {toDelete} = req.query
+        const {toDelete} = req.query;
         const message = 'COOKIE DELETED';
         return res
                 .status(201)
@@ -41,6 +39,7 @@ cookiesRouter.delete('/delete/:toDelete', (req,res,next)=>{
     } catch (error) {
         return next(error);
     }
-})
+});
+
 
 export default cookiesRouter

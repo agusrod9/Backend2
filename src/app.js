@@ -1,24 +1,31 @@
 import express from 'express';
+import mongoose from 'mongoose';
+import "dotenv/config.js"
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import MongoStore from 'connect-mongo';
+import session from 'express-session';
+import {Server} from 'socket.io';
+import config from './config.js';
+import handlebars from 'express-handlebars';
 import prodsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
 import cookiesRouter from './routes/cookies.router.js';
 import sessionsRouter from './routes/sessions.router.js';
-import config from './config.js';
-import handlebars from 'express-handlebars';
-import {Server} from 'socket.io';
-import mongoose from 'mongoose';
-import "dotenv/config.js"
-import morgan from 'morgan';
 import pathHandler from './middlewares/pathHandler.mid.js';
 import errorHandler from './middlewares/errorHandler.mid.js';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
+
+
+//Environment vars
+const {PORT, MONGO_REMOTE_URI} = process.env
 
 //Server Instance
 const app = express();
-const port = process.env.PORT;
+const httpServer = app.listen(PORT, ready);
+
+//Socket Server Instance
+const socketServer = new Server(httpServer);
 
 //Middlewares
 app.use(express.json());
@@ -27,10 +34,11 @@ app.use(express.static(`${config.dirName}/public`));
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(session({
+    name: "sessionCookie",
     secret: "process.env.SECRET_SESSION",
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({mongoUrl: process.env.MONGO_REMOTE_URI, ttl: 60*60*24})
+    store: new MongoStore({mongoUrl: MONGO_REMOTE_URI, ttl: 60*60*24})
 }))
 
 //Routers
@@ -44,24 +52,12 @@ app.use('/views', viewsRouter);
 app.use(pathHandler);
 app.use(errorHandler)
 
-
+//Handlebars
 app.engine('handlebars', handlebars.engine());
 app.set('views',`${config.dirName}/views`);
 app.set('view engine', 'handlebars');
 
-
-const httpServer = app.listen(port, async ()=>{
-    try{
-        await mongoose.connect(process.env.MONGO_REMOTE_URI)
-        console.log(`Listening on Port ${port}`);
-    }catch{
-        console.log("Could not connect with DataBase.")
-        process.exit;
-    }
-})
-
-const socketServer = new Server(httpServer);
-
+//Socket Server methods
 socketServer.on('connection', socket => {
     console.log(`Client CONNECTION: ${socket.id}`);
     socket.on('disconnect', ()=>{
@@ -77,3 +73,18 @@ socketServer.on('connection', socket => {
     })
 });
 
+//Server methods
+async function ready (){
+    console.log(`SERVER LISTENING ON PORT ${PORT}`);
+    await dbConnect();
+}
+
+async function dbConnect(){
+    try{
+        await mongoose.connect(MONGO_REMOTE_URI)
+        console.log("DATABASE CONNECTION : SUCCESS")
+    }catch{
+        console.log("DATABASE CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE")
+        process.exit;
+    }
+}
