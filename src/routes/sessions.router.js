@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { create } from "../dao/managers/userManager.js";
+import { create, readByEmail, readById } from "../dao/managers/userManager.js";
 
 const sessionsRouter = Router();
 
@@ -9,34 +9,26 @@ sessionsRouter.post('/register', async(req, res, next)=>{
         const data = req.body;
         const one = await create(data);
         const message = 'USER REGISTERED'
-        return res.status(201).json({message, one})
+        return res.status(201).json({message, user_id: one._id})
     } catch (error) {
         return next(error);
     }
 })
 
-sessionsRouter.post('/login', (req, res, next)=>{
+sessionsRouter.post('/login', async(req, res, next)=>{
     try {
-        req.session.online = true;
         const {email} = req.body;
-        req.session.email = email;
+        req.session.online = true;
+        const one = await readByEmail(email);
+        req.session.user_id = one._id;
+        req.session.role = one.role;
         const message = 'USER LOGGED IN';
-        return res.status(200).json({message, email})
+        return res.status(200).json({message, user_id: one._id});
     } catch (error) {
         return next(error);
     }
 })
 
-sessionsRouter.post('/logout', async(req, res, next)=>{
-    try {
-        const session = req.session;
-        req.session.destroy();
-        const message = 'USER LOGGED OUT';
-        return res.status(200).json({message, session});
-    } catch (error) {
-        return next(error);
-    }
-})
 
 sessionsRouter.post('/online', async(req, res, next)=>{
     try {
@@ -47,6 +39,17 @@ sessionsRouter.post('/online', async(req, res, next)=>{
         }
         const message = 'USER OFFLINE'
         return res.status(401).json({message})
+    } catch (error) {
+        return next(error);
+    }
+})
+
+sessionsRouter.post('/logout', async(req, res, next)=>{
+    try {
+        const session = req.session;
+        const message = 'USER LOGGED OUT';
+        req.session.destroy();
+        return res.status(200).json({message, user: session.user_id});
     } catch (error) {
         return next(error);
     }

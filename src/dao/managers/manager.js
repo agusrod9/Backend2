@@ -40,9 +40,9 @@ export class Manager{
         }
     }
 
-    readByEmail = async(eMail)=>{
+    readByEmail = async(email)=>{
         try {
-            const one = await this.model.findOne({eMail}).lean();
+            const one = await this.model.findOne({email}).lean();
             return one;
         } catch (error) {
             throw error;
