@@ -1,13 +1,8 @@
 import { Router } from 'express';
-import { productManager } from '../dao/managers/productManager.js';
 import productsModel from '../dao/models/products.model.js';
 import cartsModel from '../dao/models/carts.model.js';
 
 const router = Router();
-const prodManager = new productManager('./products.json');
-
-
-
 
 router.get('/', async(req, res)=>{
     //const products = await prodManager.getProducts();

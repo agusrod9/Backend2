@@ -13,16 +13,6 @@ export class Manager{
         }
     }
     
-    
-    readByEmail = async(eMail)=>{
-        try {
-            const one = await this.model.findOne({eMail}).lean();
-            return one;
-        } catch (error) {
-            throw error;
-        }
-    }
-    
     read = async(data)=>{
         try {
             const all = await this.model.find(data).lean();
@@ -32,6 +22,33 @@ export class Manager{
         }
     }
 
+    readAll = async()=>{
+        try {
+            const all = await this.model.find().lean();
+            return all;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    readAllPaginated = async(query, opts)=>{
+        try {
+            const all = await this.model.paginate(query,opts)
+            return all;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    readByEmail = async(eMail)=>{
+        try {
+            const one = await this.model.findOne({eMail}).lean();
+            return one;
+        } catch (error) {
+            throw error;
+        }
+    }
+    
     readPopulated = async(data, populateOpts)=>{
         try {
             const all = await this.model.find(data).populate(populateOpts).lean();
