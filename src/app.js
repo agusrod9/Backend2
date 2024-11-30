@@ -1,12 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import "dotenv/config.js"
+import "dotenv/config.js";
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import session from 'express-session';
 import {Server} from 'socket.io';
-import config from './config.js';
+import config from './utils/config.js';
 import handlebars from 'express-handlebars';
 import prodsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
@@ -23,6 +23,7 @@ const {PORT, MONGO_REMOTE_URI, COOKIES_SECRET, SESSION_SECRET} = process.env
 //Server Instance
 const app = express();
 const httpServer = app.listen(PORT, ready);
+
 
 //Socket Server Instance
 const socketServer = new Server(httpServer);
@@ -45,12 +46,12 @@ app.use(session({
 app.use('/api/products', prodsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/cookies', cookiesRouter);
-app.use('/sessions', sessionsRouter);
+app.use('/api/sessions', sessionsRouter);
 app.use('/views', viewsRouter);
 
 ///Handlers
 app.use(pathHandler);
-app.use(errorHandler)
+app.use(errorHandler);
 
 //Handlebars
 app.engine('handlebars', handlebars.engine());
@@ -65,11 +66,11 @@ socketServer.on('connection', socket => {
     })
 
     socket.on('newProd', prod => {
-        socketServer.emit('refreshNewProd', prod)
+        socketServer.emit('refreshNewProd', prod);
     })
 
     socket.on('dropProd', prod =>{
-        socketServer.emit('refreshDropProduct', prod)
+        socketServer.emit('refreshDropProduct', prod);
     })
 });
 
@@ -81,10 +82,10 @@ async function ready (){
 
 async function dbConnect(){
     try{
-        await mongoose.connect(MONGO_REMOTE_URI)
-        console.log("DATABASE CONNECTION : SUCCESS")
+        await mongoose.connect(MONGO_REMOTE_URI);
+        console.log("DATABASE CONNECTION : SUCCESS");
     }catch{
-        console.log("DATABASE CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE")
+        console.log("DATABASE CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE");
         process.exit;
     }
 }

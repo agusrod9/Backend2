@@ -23,7 +23,7 @@ async function readAllCarts(req,res){
 }
 
 async function readCartById(req,res) {
-    let cid = req.params.cid;
+    let {cid} = req.params;
     if(mongoose.isObjectIdOrHexString(cid)){
         let populateOpts = {path: 'productList._id', model: productsModel}
         let process = await readByIdPopulated(cid, populateOpts);
@@ -58,7 +58,7 @@ async function createEmptyCart(req, res) {
 }
 
 async function addProductToCartById(req,res){
-    let cid = req.params.cid;
+    let {cid} = req.params;
     if(mongoose.isObjectIdOrHexString(cid)){
         let idObj = {_id: cid};
         let newProd = req.body._id;
@@ -95,7 +95,7 @@ async function addProductToCartById(req,res){
 }
 
 async function deleteCartById(req,res){
-    let cid = req.params.cid;
+    let {cid} = req.params;
     if(mongoose.isObjectIdOrHexString(cid)){
         let idObj = {_id: cid};
         let process = await deleteById(idObj)
