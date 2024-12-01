@@ -6,7 +6,8 @@ Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agu
 
 Comentarios: <br>
 
-- <br>
+
+-Implemento Passport-Local con email y password.<br>
 -***VER LOS SOCKET EMIT DE PRODUCT ROUTER PARA LA VISTA REAL TIME QUE NO ESTAN ANDANDO*** <br>
 -REFACTOR DE PRODUCT MANAGER, PRODUCT MODEL y PRODUCT ROUTER <br>
 -Refactor del router de Carts <br>
