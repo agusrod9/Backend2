@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
 import { createHashUtil, verifyHashUtil } from "../utils/hash.util.js";
-import { create, readByEmail } from "../dao/managers/userManager.js";
+import { create, readByEmail, readById } from "../dao/managers/userManager.js";
 
 const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL} = process.env
 
@@ -28,7 +28,7 @@ passport.use("login", new LocalStrategy(
     async(req, email, password, done)=>{
         const one = await readByEmail(email);
         if(!one){
-            const error = new Error('USER NOT REGISTERED')
+            const error = new Error('USER NOT FOUND');
             error.statusCode= 401;
             return done(error);
         }
@@ -39,11 +39,38 @@ passport.use("login", new LocalStrategy(
             req.session.role = one.role;
             return done(null, one);
         }
-        const error = new Error('INVALID CREDENTIALS')
+        const error = new Error('INVALID CREDENTIALS');
         error.statusCode= 401;
-        return done(error)
+        return done(error);
 
-    }));
+    }
+));
+
+//REVISAR DA BAD REQUEST de PASSPORT
+passport.use("admin", new LocalStrategy(
+    {passReqToCallback: true, usernameField: "email"},
+    async(req, done)=>{
+        try {
+            const loggedUserId = req.session.user_id //para limitar que responda que es admin si está loggeado.
+            const user = await readById(loggedUserId);
+            if(user && user.id == loggedUserId){
+                console.log(user);
+                const isAdmin = user.role == "ADMIN";
+                if(isAdmin){
+                    return done(null, user);
+                }
+                const error = new Error('FORBIDDEN');
+                error.statusCode=403;
+                return done(error);
+            }
+            const error = new Error('USER NOT FOUND');
+            error.statusCode= 401;
+            return done(error);
+        } catch (error) {
+            return done(error);
+        }
+    }
+));
 
 passport.use("google", new GoogleStrategy(
     { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}sessions/google/cb` },
@@ -61,9 +88,10 @@ passport.use("google", new GoogleStrategy(
             return done(null, user);
 
         } catch (error) {
-            return done(error)
+            return done(error);
         }
-}))
+    }
+));
 
 
 export default passport

@@ -7,6 +7,7 @@ sessionsRouter.post('/register', passport.authenticate('register', {session: fal
 sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login)
 sessionsRouter.post('/online', online)
 sessionsRouter.post('/logout', logout)
+sessionsRouter.post('/isadmin', passport.authenticate('admin', {session: false}), isAdmin);
 
 sessionsRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile']}));
 sessionsRouter.get('/google/cb', passport.authenticate('google', { session: false}), google);
@@ -57,10 +58,21 @@ async function logout(req, res, next) {
     }
 }
 
+async function isAdmin(req,res,next){
+    try {
+        const user = req.user;
+        const message = "USER IS ADMINISTRATOR";
+        return res.status(200).json({message, user_id : user.id});
+    } catch (error) {
+        return next(error);
+    }
+}
+
 function google(req,res,next){
     try {
         const user = req.user;
-        return res.status(200).json({message: "USER LOGGED IN", user_id : user.id});
+        const message = "USER LOGGED IN"
+        return res.status(200).json({message, user_id : user.id});
     } catch (error) {
         return next(error);
     }
