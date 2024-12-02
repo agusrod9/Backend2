@@ -46,14 +46,20 @@ passport.use("login", new LocalStrategy(
     }));
 
 passport.use("google", new GoogleStrategy(
-    { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}+sessions/google/cb` },
+    { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}sessions/google/cb` },
     async (req, accessToken, refreshToken, profile, done)=>{
         try {
-            const { id, picture} = profile;
-            let user = await readByMail(id);
+            console.log(profile);
+            const { id, given_name, family_name } = profile;
+            let user = await readByEmail(id); //Para evitar usar email, así no tengo que pedir crear una contraseña.
             if(!user){
-                user = await create({email: id, photo: picture, password: createHashUtil(id)})
+                user = await create({email: id, password: createHashUtil(id), firstName : given_name, lastName : family_name});
             }
+            req.session.online = true;
+            req.session.user_id = user._id;
+            req.session.role = user.role;
+            return done(null, user);
+
         } catch (error) {
             return done(error)
         }

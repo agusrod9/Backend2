@@ -4,24 +4,12 @@ import passport from '../middlewares/passport.mid.js';
 const sessionsRouter = Router();
 
 sessionsRouter.post('/register', passport.authenticate('register', {session: false}), register)
-
 sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login)
-
 sessionsRouter.post('/online', online)
-
 sessionsRouter.post('/logout', logout)
 
-sessionsRouter.post('/google', passport.authenticate('google', { scope: ['email', 'profile']}));
-sessionsRouter.post('/google/cb', passport.authenticate('google', { session: false}), google);
-
-function google(req,res,next){
-    try {
-        const user = req.user;
-        return res.status(200).json({message: "USER LOGGED IN", user_id : user.id});
-    } catch (error) {
-        return next(error);
-    }
-}
+sessionsRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile']}));
+sessionsRouter.get('/google/cb', passport.authenticate('google', { session: false}), google);
 
 
 async function register(req,res,next){
@@ -64,6 +52,15 @@ async function logout(req, res, next) {
         const message = 'USER LOGGED OUT';
         req.session.destroy();
         return res.status(200).json({message, user: session.user_id});
+    } catch (error) {
+        return next(error);
+    }
+}
+
+function google(req,res,next){
+    try {
+        const user = req.user;
+        return res.status(200).json({message: "USER LOGGED IN", user_id : user.id});
     } catch (error) {
         return next(error);
     }
