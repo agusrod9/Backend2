@@ -6,7 +6,8 @@ Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agu
 
 Comentarios: <br>
 
--***REVISAR LA ESTRATEGIA DE ISADMIN -> DA BAD REQUEST de PASSPORT***
+-Agrego control de usuario administrador a las rutas de Productos y Carts necesarias. <br>
+-Implemento middleware isAdminVerifier para utilizar en los CRUD - (no utilizo passport, hasta ahora no lo veo necesario) <br>
 -Implemento estrategia de Google - como una opción más de registro y login <br>
 -Implemento Passport-Local con email y password.<br>
 -***VER LOS SOCKET EMIT DE PRODUCT ROUTER PARA LA VISTA REAL TIME QUE NO ESTAN ANDANDO*** <br>

@@ -2,10 +2,11 @@ import { Router } from 'express';
 import productsModel from '../dao/models/products.model.js'
 import { create, readAllPopulated, readByIdPopulated, update, deleteById, readById } from '../dao/managers/cartManager.js';
 import mongoose from "mongoose";
+import isAdmin from '../middlewares/isAdminVerifier.mid.js';
 
 const router = Router();
 
-router.get('/', readAllCarts)
+router.get('/', isAdmin , readAllCarts)
 router.get('/:cid', readCartById);
 router.post('/', createEmptyCart);
 router.put('/:cid', addProductToCartById);

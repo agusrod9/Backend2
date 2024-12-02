@@ -1,5 +1,7 @@
 import { Router } from "express";
 import passport from '../middlewares/passport.mid.js';
+import { readById } from "../dao/managers/userManager.js";
+import isAdmin from "../middlewares/isAdminVerifier.mid.js";
 
 const sessionsRouter = Router();
 
@@ -7,13 +9,13 @@ sessionsRouter.post('/register', passport.authenticate('register', {session: fal
 sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login)
 sessionsRouter.post('/online', online)
 sessionsRouter.post('/logout', logout)
-sessionsRouter.post('/isadmin', passport.authenticate('admin', {session: false}), isAdmin);
+sessionsRouter.post('/isadmin', isAdmin);
 
 sessionsRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile']}));
 sessionsRouter.get('/google/cb', passport.authenticate('google', { session: false}), google);
 
 
-async function register(req,res,next){
+function register(req,res,next){
     try {
         const user = req.user; //viene del done(null, newUser) de passport
         const message = 'USER REGISTERED'
@@ -23,7 +25,7 @@ async function register(req,res,next){
     }
 }
 
-async function login(req, res, next) {
+function login(req, res, next) {
     try {
         const user = req.user;
         const message = 'USER LOGGED IN';
@@ -33,7 +35,7 @@ async function login(req, res, next) {
     }
 }
 
-async function online(req, res, next) {
+function online(req, res, next) {
     try {
         const session = req.session;
         if(session.online){
@@ -47,7 +49,7 @@ async function online(req, res, next) {
     }
 }
 
-async function logout(req, res, next) {
+function logout(req, res, next) {
     try {
         const session = req.session;
         const message = 'USER LOGGED OUT';
@@ -58,15 +60,6 @@ async function logout(req, res, next) {
     }
 }
 
-async function isAdmin(req,res,next){
-    try {
-        const user = req.user;
-        const message = "USER IS ADMINISTRATOR";
-        return res.status(200).json({message, user_id : user.id});
-    } catch (error) {
-        return next(error);
-    }
-}
 
 function google(req,res,next){
     try {

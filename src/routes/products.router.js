@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { io } from 'socket.io-client';
 import { readById, readAllPaginated, create, update, deleteById} from '../dao/managers/productManager.js'
 import mongoose from "mongoose";
+import isAdmin from '../middlewares/isAdminVerifier.mid.js';
 
 const router = Router();
 
@@ -9,11 +10,11 @@ router.get('/:pid', readProductById);
 
 router.get('/:limit?:page?:sort?:qry?', readAllProductsPaginated);
 
-router.post('/',createProduct);
+router.post('/', isAdmin, createProduct);
 
-router.put('/:pid', updateProduct);
+router.put('/:pid', isAdmin, updateProduct);
 
-router.delete('/:pid', deleteProduct);
+router.delete('/:pid', isAdmin, deleteProduct);
 
 
 async function readProductById(req,res){

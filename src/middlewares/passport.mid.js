@@ -47,15 +47,18 @@ passport.use("login", new LocalStrategy(
 ));
 
 //REVISAR DA BAD REQUEST de PASSPORT
-passport.use("admin", new LocalStrategy(
+passport.use("isadmin", new LocalStrategy(
     {passReqToCallback: true, usernameField: "email"},
     async(req, done)=>{
         try {
-            const loggedUserId = req.session.user_id //para limitar que responda que es admin si está loggeado.
+            const loggedUserId = req.session.user_id; //para limitar que responda que es admin si está loggeado.
             const user = await readById(loggedUserId);
+            const isAdmin = false;
             if(user && user.id == loggedUserId){
                 console.log(user);
-                const isAdmin = user.role == "ADMIN";
+                if(user.role == "ADMIN"){
+                    isAdmin=true;
+                }
                 if(isAdmin){
                     return done(null, user);
                 }
