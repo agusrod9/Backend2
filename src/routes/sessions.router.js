@@ -58,8 +58,7 @@ async function logout(req, res, next) {
         const user = await readById(data.user_id);
         const message = 'USER LOGGED OUT';
         req.token = createLogoutTokenUtil({user_id: user._id, role: user.role})
-        console.log(req.token);
-        return res.status(200).json({message, token: token});
+        return res.status(200).json({message, newToken: req.token});
     } catch (error) {
         return next(error);
     }
