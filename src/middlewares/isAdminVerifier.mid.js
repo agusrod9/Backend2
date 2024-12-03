@@ -1,15 +1,17 @@
 import { readById } from "../dao/managers/userManager.js";
+import { verifyTokenUtil } from "../utils/tokens.util.js";
 
 export default async function isAdmin(req,res,next){
     try {
-        const session = req.session;
-        const loggedUsrId = session.user_id;
-        const user = await readById(loggedUsrId);
-        if(user.role == session.role && session.role=="ADMIN"){
+        const {token} = req.headers;
+        const data = verifyTokenUtil(token);
+        const user = await readById(data.user_id);
+        if(user.role == "ADMIN"){
             return next();
         }
-        const message = "FORBIDDEN";
-        return res.status(403).json({message, user_id : session.user_id});
+        const error = new Error("USER IS NOT AN ADMINISTRATOR");
+        error.statusCode = 403;
+        throw error;
     } catch (error) {
         return next(error);
     }

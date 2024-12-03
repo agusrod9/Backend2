@@ -1,7 +1,8 @@
 import { Router } from "express";
 import passport from '../middlewares/passport.mid.js';
-import { readById } from "../dao/managers/userManager.js";
 import isAdmin from "../middlewares/isAdminVerifier.mid.js";
+import { createLogoutTokenUtil, createTokenUtil, verifyTokenUtil } from "../utils/tokens.util.js";
+import { readById } from "../dao/managers/userManager.js";
 
 const sessionsRouter = Router();
 
@@ -27,20 +28,21 @@ function register(req,res,next){
 
 function login(req, res, next) {
     try {
-        const user = req.user;
         const message = 'USER LOGGED IN';
-        return res.status(200).json({message, user_id: user._id});
+        return res.status(200).json({message, token: req.token});
     } catch (error) {
         return next(error);
     }
 }
 
-function online(req, res, next) {
+async function online(req, res, next) {
     try {
-        const session = req.session;
-        if(session.online){
+        const {token} = req.headers;
+        const data = verifyTokenUtil(token);
+        const user = await readById(data.user_id);
+        if(user){
             const message = 'USER ONLINE'
-            return res.status(200).json({message, session})
+            return res.status(200).json({message, user : user._id})
         }
         const message = 'USER OFFLINE'
         return res.status(401).json({message})
@@ -49,28 +51,33 @@ function online(req, res, next) {
     }
 }
 
-function logout(req, res, next) {
+async function logout(req, res, next) {
     try {
-        const session = req.session;
+        const {token} = req.headers;
+        const data = verifyTokenUtil(token);
+        const user = await readById(data.user_id);
         const message = 'USER LOGGED OUT';
-        req.session.destroy();
-        return res.status(200).json({message, user: session.user_id});
+        req.token = createLogoutTokenUtil({user_id: user._id, role: user.role})
+        console.log(req.token);
+        return res.status(200).json({message, token: token});
     } catch (error) {
         return next(error);
     }
 }
 
-function isAdminResponse(req,res,next){
-    const session = req.session;
+async function isAdminResponse(req,res,next){
+    const {token} = req.headers;
+    const data = verifyTokenUtil(token);
+    const user = await readById(data.user_id);
     const message = 'USER IS ADMINISTRATOR';
-    return res.status(200).json({message, user: session.user_id});
+    return res.status(200).json({message, user: user._id});
 }
 
-function google(req,res,next){
+async function google(req,res,next){
     try {
         const user = req.user;
         const message = "USER LOGGED IN"
-        return res.status(200).json({message, user_id : user.id});
+        return res.status(200).json({message, user_id : user._id});
     } catch (error) {
         return next(error);
     }
