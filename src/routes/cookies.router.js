@@ -33,7 +33,7 @@ cookiesRouter.delete('/delete', (req,res,next)=>{
         const {toDelete} = req.query;
         const message = 'COOKIE DELETED';
         return res
-                .status(204)
+                .status(200)
                 .clearCookie(toDelete)
                 .json({message})
     } catch (error) {

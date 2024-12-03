@@ -29,7 +29,9 @@ function register(req,res,next){
 function login(req, res, next) {
     try {
         const message = 'USER LOGGED IN';
-        return res.status(200).json({message, token: req.token});
+        const {token} = req
+        const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
+        return res.status(200).cookie('token', token, cookieOpts).json({message, token: token});
     } catch (error) {
         return next(error);
     }
@@ -56,9 +58,10 @@ async function logout(req, res, next) {
         const {token} = req.headers;
         const data = verifyTokenUtil(token);
         const user = await readById(data.user_id);
+        const cookieOpts = {httpOnly: true, signed: true}
         const message = 'USER LOGGED OUT';
         req.token = createLogoutTokenUtil({user_id: user._id, role: user.role})
-        return res.status(200).json({message, newToken: req.token});
+        return res.status(200).clearCookie("token",cookieOpts).json({message, newToken: req.token});
     } catch (error) {
         return next(error);
     }
@@ -74,9 +77,10 @@ async function isAdminResponse(req,res,next){
 
 async function google(req,res,next){
     try {
-        const user = req.user;
-        const message = "USER LOGGED IN"
-        return res.status(200).json({message, user_id : user._id});
+        const message = 'USER LOGGED IN';
+        const {token} = req
+        const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
+        return res.status(200).cookie('token', token, cookieOpts).json({message, token: token});
     } catch (error) {
         return next(error);
     }

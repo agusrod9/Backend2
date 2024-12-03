@@ -34,13 +34,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(`${config.dirName}/public`));
 app.use(morgan("dev"));
 app.use(cookieParser(COOKIES_SECRET));
-app.use(session({
-    name: "sessionCookie",
-    secret: SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
-    store: new MongoStore({mongoUrl: MONGO_REMOTE_URI, ttl: 60*60*24})
-}))
 
 //Routers
 app.use('/api/products', prodsRouter);
