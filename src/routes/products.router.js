@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { io } from 'socket.io-client';
-import { readById, readAllPaginated, create, update, deleteById} from '../dao/managers/productManager.js'
+import { readById, readAllPaginated, create, update, deleteById} from '../dao/managers/productManager.js';
+import passport from '../middlewares/passport.mid.js';
 import mongoose from "mongoose";
-import isAdmin from '../middlewares/isAdminVerifier.mid.js';
 
 const router = Router();
 
@@ -10,11 +10,11 @@ router.get('/:pid', readProductById);
 
 router.get('/:limit?:page?:sort?:qry?', readAllProductsPaginated);
 
-router.post('/', isAdmin, createProduct);
+router.post('/', passport.authenticate('isAdmin', {session:false}), createProduct);
 
-router.put('/:pid', isAdmin, updateProduct);
+router.put('/:pid', passport.authenticate('isAdmin', {session:false}), updateProduct);
 
-router.delete('/:pid', isAdmin, deleteProduct);
+router.delete('/:pid', passport.authenticate('isAdmin', {session:false}), deleteProduct);
 
 
 async function readProductById(req,res){

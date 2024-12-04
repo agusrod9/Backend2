@@ -1,11 +1,12 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { createHashUtil, verifyHashUtil } from "../utils/hash.util.js";
-import { create, readByEmail, readById } from "../dao/managers/userManager.js";
+import { create, readByEmail } from "../dao/managers/userManager.js";
 import { createTokenUtil } from "../utils/tokens.util.js";
 
-const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL} = process.env
+const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL, TOKEN_SECRET} = process.env
 
 passport.use("register", new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" }, 
@@ -44,6 +45,35 @@ passport.use("login", new LocalStrategy(
 
     }
 ));
+
+passport.use("isAdmin", new JwtStrategy(
+    {jwtFromRequest: ExtractJwt.fromExtractors([req=>req?.signedCookies?.token]), secretOrKey: TOKEN_SECRET},
+    (data, done)=>{
+        const userId = data.user_id;
+        if(data.role != "ADMIN"){
+            const error = new Error('UNAUTHORIZED');
+            error.statusCode = 403;
+            return done(error);
+        }
+        return done(null, userId);
+    }
+));
+
+passport.use("isOnline", new JwtStrategy(
+    {jwtFromRequest: ExtractJwt.fromExtractors([req=>req?.signedCookies?.token]), secretOrKey: TOKEN_SECRET},
+    (data, done)=>{
+        const userId = data.user_id;
+        return done(null, userId);
+    }
+))
+
+passport.use("logout", new JwtStrategy(
+    {jwtFromRequest: ExtractJwt.fromExtractors([req=>req?.signedCookies?.token]), secretOrKey: TOKEN_SECRET},
+    (data, done)=>{
+        const userId = data.user_id;
+        return done(null, {_id: userId});
+    }
+))
 
 passport.use("google", new GoogleStrategy(
     { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}sessions/google/cb` },

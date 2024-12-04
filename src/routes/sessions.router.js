@@ -1,16 +1,15 @@
 import { Router } from "express";
 import passport from '../middlewares/passport.mid.js';
-import isAdmin from "../middlewares/isAdminVerifier.mid.js";
-import { createLogoutTokenUtil, createTokenUtil, verifyTokenUtil } from "../utils/tokens.util.js";
+import { createLogoutTokenUtil } from "../utils/tokens.util.js";
 import { readById } from "../dao/managers/userManager.js";
 
 const sessionsRouter = Router();
 
-sessionsRouter.post('/register', passport.authenticate('register', {session: false}), register)
-sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login)
-sessionsRouter.post('/online', online)
-sessionsRouter.post('/logout', logout)
-sessionsRouter.post('/isadmin', isAdmin, isAdminResponse);
+sessionsRouter.post('/register', passport.authenticate('register', {session: false}), register);
+sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login);
+sessionsRouter.post('/online', passport.authenticate('isOnline', {session: false}), isOnlineResponse);
+sessionsRouter.post('/logout', passport.authenticate('logout', {session: false}) ,logoutResponse);
+sessionsRouter.post('/isadmin', passport.authenticate('isAdmin', {session:false}), isAdminResponse);
 
 sessionsRouter.get('/google', passport.authenticate('google', { scope: ['email', 'profile']}));
 sessionsRouter.get('/google/cb', passport.authenticate('google', { session: false}), google);
@@ -18,9 +17,8 @@ sessionsRouter.get('/google/cb', passport.authenticate('google', { session: fals
 
 function register(req,res,next){
     try {
-        const user = req.user; //viene del done(null, newUser) de passport
         const message = 'USER REGISTERED'
-        return res.status(201).json({message, user_id: user._id})
+        return res.status(201).json({message})
     } catch (error) {
         return next(error);
     }
@@ -29,50 +27,41 @@ function register(req,res,next){
 function login(req, res, next) {
     try {
         const message = 'USER LOGGED IN';
-        const {token} = req
+        const {token} = req;
         const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
-        return res.status(200).cookie('token', token, cookieOpts).json({message, token: token});
+        return res.status(200).cookie('token', token, cookieOpts).json({message});
     } catch (error) {
         return next(error);
     }
 }
 
-async function online(req, res, next) {
+async function isOnlineResponse(req, res, next) {
     try {
-        const {token} = req.headers;
-        const data = verifyTokenUtil(token);
-        const user = await readById(data.user_id);
-        if(user){
-            const message = 'USER ONLINE'
-            return res.status(200).json({message, user : user._id})
-        }
-        const message = 'USER OFFLINE'
-        return res.status(401).json({message})
+        const message = 'USER ONLINE';
+        return res.status(200).json({message});
+        
     } catch (error) {
         return next(error);
     }
 }
 
-async function logout(req, res, next) {
+async function logoutResponse(req, res, next) {
     try {
-        const {token} = req.headers;
-        const data = verifyTokenUtil(token);
-        const user = await readById(data.user_id);
+        const userId = req.user;
+        const user = await readById(userId);
         const cookieOpts = {httpOnly: true, signed: true}
         const message = 'USER LOGGED OUT';
-        req.token = createLogoutTokenUtil({user_id: user._id, role: user.role})
-        return res.status(200).clearCookie("token",cookieOpts).json({message, newToken: req.token});
+        req.token = createLogoutTokenUtil({user_id: user._id, role: user.role});
+        req.user = null;
+        return res.status(200).clearCookie("token",cookieOpts).json({message});
     } catch (error) {
         return next(error);
     }
 }
 
 async function isAdminResponse(req,res,next){
-    const {token} = req.headers;
-    const data = verifyTokenUtil(token);
-    const user = await readById(data.user_id);
     const message = 'USER IS ADMINISTRATOR';
-    return res.status(200).json({message, user: user._id});
+    return res.status(200).json({message});
 }
 
 async function google(req,res,next){
@@ -80,7 +69,7 @@ async function google(req,res,next){
         const message = 'USER LOGGED IN';
         const {token} = req
         const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
-        return res.status(200).cookie('token', token, cookieOpts).json({message, token: token});
+        return res.status(200).cookie('token', token, cookieOpts).json({message});
     } catch (error) {
         return next(error);
     }

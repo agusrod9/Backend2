@@ -5,6 +5,8 @@ Programación Backend II: Diseño y Arquitectura Backend 70280
 Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
 Comentarios: <br>
+<br>
+-Implemento estrategia passport-jwt para endpoints de session router : -isOnline -logout -isAdmin <br>
 -implemento cookie con el token, con la estrategia que ya tengo de passport local + jwt<br>
 -Modifico todos los endpoint de sessions, para utilizar token en vez de session<br>
 -Implemento jwt para crear y verificar tokens en session router<br>

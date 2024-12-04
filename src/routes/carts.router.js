@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import productsModel from '../dao/models/products.model.js'
+import productsModel from '../dao/models/products.model.js';
 import { create, readAllPopulated, readByIdPopulated, update, deleteById, readById } from '../dao/managers/cartManager.js';
+import passport from '../middlewares/passport.mid.js';
 import mongoose from "mongoose";
-import isAdmin from '../middlewares/isAdminVerifier.mid.js';
 
 const router = Router();
 
-router.get('/', isAdmin , readAllCarts)
+router.get('/' , passport.authenticate('isAdmin', {session:false}),  readAllCarts)
 router.get('/:cid', readCartById);
 router.post('/', createEmptyCart);
 router.put('/:cid', addProductToCartById);
