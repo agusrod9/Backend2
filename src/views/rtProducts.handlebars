@@ -130,14 +130,15 @@
     })
 
     socketClient.on('refreshDropProduct', prod=>{
+        
         let  prodRow = document.getElementById(`${prod._id}`);
+        prodRow.remove();
         Swal.fire({
             position: "top-end",
             title: `Removed:  ${prod.title}`,
             showConfirmButton: false,
             timer: 1800
         });
-        prodRow.remove();
 
     })
 

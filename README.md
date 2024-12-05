@@ -5,7 +5,13 @@ Programación Backend II: Diseño y Arquitectura Backend 70280
 Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
 Comentarios: <br>
-<br>
+-<br>
+-Soluciono problema con sweet alert que dejó de funcionar en Login y realtimeproducts<br>
+-Soluciono problema con los socket emit que no permitía ver productos en tiempo real<br>
+-Implemento VISTA Home con menú, resta funcionalidad menú<br>
+-Implemento register con google desde vista register<br>
+-Implemento login con google desde vista login<br>
+-Implemento VISTAS Login y Register<br>
 -Implemento estrategia passport-jwt para endpoints de session router : -isOnline -logout -isAdmin <br>
 -implemento cookie con el token, con la estrategia que ya tengo de passport local + jwt<br>
 -Modifico todos los endpoint de sessions, para utilizar token en vez de session<br>
@@ -14,7 +20,6 @@ Comentarios: <br>
 -Implemento middleware isAdminVerifier para utilizar en los CRUD - (no utilizo passport, hasta ahora no lo veo necesario) <br>
 -Implemento estrategia de Google - como una opción más de registro y login <br>
 -Implemento Passport-Local con email y password.<br>
--***VER LOS SOCKET EMIT DE PRODUCT ROUTER PARA LA VISTA REAL TIME QUE NO ESTAN ANDANDO*** <br>
 -REFACTOR DE PRODUCT MANAGER, PRODUCT MODEL y PRODUCT ROUTER <br>
 -Refactor del router de Carts <br>
 -Refactor del manager de Carts <br>

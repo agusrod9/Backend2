@@ -1,0 +1,60 @@
+
+
+<h1>Login</h1>
+<div>
+    <form>
+        <input id="txtUserName" type="text" name="username" placeholder="Username" required>
+        <input id="txtPassword" type="password" name="password" placeholder="Password" required>
+        <button id="btnLogin">Login</button>
+    </form>
+    <div id="googleLoginSection">
+        <form action="/api/sessions/google">
+            <button type="submit" id="btnGoogleLogin" class="login-with-google-btn" >
+                Login with Google
+            </button>
+        </form>
+    </div>
+    <p>Don´t have an account? <span><a href="/register">Register</a></span> </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+    let url = ''
+    let username = document.getElementById('txtUserName');
+    let password = document.getElementById('txtPassword');
+    let btnLogin = document.getElementById('btnLogin');
+    let btnGoogleLogin = document.getElementById('btnGoogleLogin');
+    
+
+    btnLogin.addEventListener('click',async(e)=>{
+        try{
+            e.preventDefault();
+            const data = {
+                email: username.value,
+                password: password.value
+            }
+            const opts = {
+                method : "POST",
+                headers : {"Content-Type" : "application/json"},
+                body : JSON.stringify(data)
+            }
+            let response = await fetch("/api/sessions/login", opts);
+            response = await response.json();
+            
+            
+            Swal.fire({
+                position: "top-end",
+                title: `${response.message}`,
+                showConfirmButton: false,
+                timer: 1800
+            });
+            setTimeout(()=>{window.location.replace('/')}, 1800);
+        }catch(error){
+            alert(error.message);
+        }
+        
+    })
+
+    
+
+</script>

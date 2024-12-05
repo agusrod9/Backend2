@@ -60,7 +60,7 @@ async function readAllProductsPaginated(req,res){
 }
 
 async function createProduct(req, res){
-    const socket = io('http://localhost:8080');
+    const socket = io('http://localhost:8085');
     if(req.body.hasOwnProperty('title') && req.body.hasOwnProperty('description') && req.body.hasOwnProperty('code') && req.body.hasOwnProperty('price') && req.body.hasOwnProperty('stock') && req.body.hasOwnProperty('category')){
         let newProduct={};
         if(req.body.hasOwnProperty('thumbnails')){
@@ -97,7 +97,7 @@ async function updateProduct(req,res){
 }
 
 async function deleteProduct(req,res){
-    const socket = io('http://localhost:8080');
+    const socket = io('http://localhost:8085');
     let {pid} = req.params;
     if(mongoose.isObjectIdOrHexString(pid)){
         let process = await deleteById(pid);

@@ -1,0 +1,59 @@
+<h1>Register</h1>
+
+<div>
+    <form>
+        <input id="txtName" type="text" name="name" placeholder="Name" required>
+        <input id="txtLastName" type="text" name="lastName" placeholder="Last Name" required>
+        <input id="txtUserName" type="text" name="username" placeholder="E-mail" required>
+        <input id="txtPassword" type="password" name="password" placeholder="Password" required>
+        <input id="txtConfirmPassword" type="password" name="ConfirmPassword" placeholder="Confirm Password" required>
+        <button id="btnRegister">Register</button>
+    </form>
+    <div id="googleLoginSection">
+        <form action="/api/sessions/google">
+            <button type="submit" id="btnGoogleRegister" class="login-with-google-btn" >
+                Register with Google
+            </button>
+        </form>
+    </div>
+    <p>Already have an account? <span><a href="/login">Login</a></span> </p>
+</div>
+
+
+<script type="module">
+    let url = ''
+    let name = document.getElementById('txtName');
+    let lastName = document.getElementById('txtLastName');
+    let username = document.getElementById('txtUserName');
+    let password = document.getElementById('txtPassword');
+    let confPassword = document.getElementById('txtConfirmPassword');
+    let btnRegister = document.getElementById('btnRegister');
+    let btnGoogleLogin = document.getElementById('btnGoogleRegister');
+    
+
+    btnRegister.addEventListener('click',async(e)=>{
+        try{
+            e.preventDefault();
+            const data = {
+                firstName: name.value,
+                lastName : lastName.value,
+                email: username.value,
+                password: password.value
+            }
+            const opts = {
+                method : "POST",
+                headers : {"Content-Type" : "application/json"},
+                body : JSON.stringify(data)
+            }
+            let response = await fetch("/api/sessions/register", opts);
+            response = await response.json();
+            alert(response.message);
+        }catch(error){
+            alert(error.message);
+        }
+        
+    })
+
+    
+
+</script>

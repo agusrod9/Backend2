@@ -1,71 +1,14 @@
-<div class="container">
-    <h1>Products List</h1>
-    <a class="goToCartAnchor" href="views/cart">
-        <div class="goToCart">
-            <img src="../img/cart.png" alt="cart">
-            <p>Go to cart</p>
-        </div>
-    </a>
-    {{#each products}}
-        <div class="prodRow" id="{{this._id}}">
-            <h3 class="prodRow__title">{{this.title}}</h3>
-            <p class="prodRow__desc">{{this.description}}</p>
-            <p class="prodRow__price">U$S {{this.price}}</p>
-            <img class="prodRow__deleteIcon" src="../img/delete.png" alt="">
-            <img class="prodRow__cartIcon" src="../img/cart.png" alt="">
-        </div>
-    {{/each}}
+<div class="homeContainer">
+    <div class="homeMenuContainer">
+        <h1>Backend 2 #70280</h1>
+        <h3>Agustín Rodríguez</h3>
+
+        <div class="homeRow">MI CARRITO</div>
+        <div class="homeRow">PRODUCTOS</div>
+        <div class="homeRow admin">VER TODOS LOS CARRITOS</div>
+        <div class="homeRow">PRODUCTOS EN TIEMPO REAL</div>
+        <div class="homeRow admin">AGREGAR UN PRODUCTO</div>
+        <div class="homeRow admin">BORRAR UN PRODUCTO</div>
+        <div class="homeRow admin">VER USUARIOS</div>
+    </div>
 </div>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script type="module">
-    //Para modificar una vez deployado
-    const url = '';
-
-    let deleteIcons = document.querySelectorAll('.prodRow__deleteIcon');
-    for(let i=0; i<deleteIcons.length;i++){
-        deleteIcons[i].addEventListener('click', ()=>{
-            let prodId= deleteIcons[i].parentElement.id;
-            fetch(`${url}/api/products/${prodId}`, {
-                method: 'DELETE',
-                body: '',
-                headers: {
-                    "Content-type":"application/json"
-                }
-            });
-            let  prodRow = document.getElementById(`${prodId}`);
-            Swal.fire({
-                position: "top-end",
-                title: `Removed`,
-                showConfirmButton: false,
-                timer: 1800
-            });
-            prodRow.remove();
-            })
-    }
-
-    let cartIcons = document.querySelectorAll('.prodRow__cartIcon');
-    for(let i=0; i<cartIcons.length;i++){
-        cartIcons[i].addEventListener('click', ()=>{
-            let prodId= cartIcons[i].parentElement.id;
-            console.log(`Agrego producto al carrito: ${prodId}`);
-            fetch(`${url}/api/carts`)
-                .then(res=>res.json())
-                .then(data=>{
-                    let cartId = data.data[0]._id;
-                    fetch(`${url}/api/carts/${cartId}`, {
-                        method: 'PUT',
-                        body: JSON.stringify({"_id" : prodId}),
-                        headers: {
-                        "Content-type":"application/json"
-                        }
-                    });
-                });
-        })
-    }
-
-
-
-</script>

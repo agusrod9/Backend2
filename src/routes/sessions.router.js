@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from '../middlewares/passport.mid.js';
+import isOnline from "../middlewares/isOnlineVerifier.mid.js";
 import { createLogoutTokenUtil } from "../utils/tokens.util.js";
 import { readById } from "../dao/managers/userManager.js";
 
@@ -7,7 +8,7 @@ const sessionsRouter = Router();
 
 sessionsRouter.post('/register', passport.authenticate('register', {session: false}), register);
 sessionsRouter.post('/login', passport.authenticate('login', {session: false}) ,login);
-sessionsRouter.post('/online', passport.authenticate('isOnline', {session: false}), isOnlineResponse);
+sessionsRouter.post('/online', isOnline, isOnlineResponse);
 sessionsRouter.post('/logout', passport.authenticate('logout', {session: false}) ,logoutResponse);
 sessionsRouter.post('/isadmin', passport.authenticate('isAdmin', {session:false}), isAdminResponse);
 
@@ -70,6 +71,7 @@ async function google(req,res,next){
         const {token} = req
         const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
         return res.status(200).cookie('token', token, cookieOpts).json({message});
+        //return res.status(200).cookie('token', token, cookieOpts).render('home');
     } catch (error) {
         return next(error);
     }

@@ -5,14 +5,12 @@ import cartsModel from '../dao/models/carts.model.js';
 const router = Router();
 
 router.get('/', async(req, res)=>{
-    //const products = await prodManager.getProducts();
     let products = await productsModel.find().lean();
-    res.status(200).render('home', {products})
+    res.status(200).render('products', {products, title: "Products"})
 })
 
 
 router.get('/realtimeproducts', async(req, res)=>{
-    //const products = await prodManager.getProducts();
     let products = await productsModel.find().lean();
     res.status(200).render('rtProducts', {products});
 })

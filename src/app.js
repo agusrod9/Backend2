@@ -8,6 +8,7 @@ import session from 'express-session';
 import {Server} from 'socket.io';
 import config from './utils/config.js';
 import handlebars from 'express-handlebars';
+import homeRouter from './routes/home.router.js';
 import prodsRouter from './routes/products.router.js';
 import cartsRouter from './routes/carts.router.js';
 import viewsRouter from './routes/views.router.js';
@@ -41,6 +42,7 @@ app.use('/api/carts', cartsRouter);
 app.use('/api/cookies', cookiesRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/views', viewsRouter);
+app.use('/', homeRouter);
 
 ///Handlers
 app.use(pathHandler);
@@ -50,6 +52,7 @@ app.use(errorHandler);
 app.engine('handlebars', handlebars.engine());
 app.set('views',`${config.dirName}/views`);
 app.set('view engine', 'handlebars');
+console.log(config.dirName);
 
 //Socket Server methods
 socketServer.on('connection', socket => {
