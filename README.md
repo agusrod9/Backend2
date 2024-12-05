@@ -4,7 +4,8 @@ Programación Backend II: Diseño y Arquitectura Backend 70280
 
 Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
-#PARA PROBAR: <br>
+-PARA PROBAR: <br>
+-https://drive.google.com/drive/folders/1YvCORLJgicKoEHuY4cYXDqb-tlUlI6Ka?usp=sharing
 <br>
 -Para probar las vistas, ingresar a localhost:8085 - El sistema redirigirá hacia login o register<br>
 -Para probar con usuario Admin utilizar el ya creado testadmin@test.com con pass1234 como password <br>
