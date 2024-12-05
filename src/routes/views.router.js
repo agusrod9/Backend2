@@ -12,19 +12,19 @@ router.get('/', async(req, res)=>{
 
 router.get('/realtimeproducts', async(req, res)=>{
     let products = await productsModel.find().lean();
-    res.status(200).render('rtProducts', {products});
+    res.status(200).render('rtProducts', {products, title: "Real time products"});
 })
 
 router.get('/cart:cid', async(req,res)=>{
     let cid = req.params.cid;
     let cart = await cartsModel.find({_id: cid}).populate({path: 'productList._id', model: productsModel}).lean();
-    res.status(200).render('cart', {cart});
+    res.status(200).render('cart', {cart, title: "Cart" });
 })
 
 router.get('/cart', async(req,res)=>{
     //funciona porque mi modelo sería con un cart siempre. al comprarlo o borrarlo se borra. Nunca hay más de uno.
     let cart = await cartsModel.find().populate({path: 'productList._id', model: productsModel}).lean(); 
-    res.status(200).render('cart', {cart});
+    res.status(200).render('cart', {cart, title: "Cart"});
 })
 
 
