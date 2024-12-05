@@ -4,6 +4,16 @@ Programación Backend II: Diseño y Arquitectura Backend 70280
 
 Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
+#PARA PROBAR: <br>
+<br>
+-Para probar las vistas, ingresar a localhost:8085 - El sistema redirigirá hacia login o register<br>
+-Para probar con usuario Admin utilizar el ya creado testadmin@test.com con pass1234 como password <br>
+-Para probar con usuario Admin utilizar el ya creado testuser@test.com con pass1234 como password <br>
+<br>
+-Adjunto proyecto Postman <br>
+-Adjunto archivo de variables de entorno (.env) <br>
+
+
 Comentarios: <br>
 -<br>
 -Soluciono problema con sweet alert que dejó de funcionar en Login y realtimeproducts<br>
