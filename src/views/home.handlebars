@@ -3,12 +3,51 @@
         <h1>Backend 2 #70280</h1>
         <h3>Agustín Rodríguez</h3>
 
-        <div class="homeRow">MI CARRITO</div>
-        <div class="homeRow">PRODUCTOS</div>
-        <div class="homeRow admin">VER TODOS LOS CARRITOS</div>
-        <div class="homeRow">PRODUCTOS EN TIEMPO REAL</div>
-        <div class="homeRow admin">AGREGAR UN PRODUCTO</div>
-        <div class="homeRow admin">BORRAR UN PRODUCTO</div>
-        <div class="homeRow admin">VER USUARIOS</div>
+        <div id="rowCart" class="homeRow">MI CARRITO</div>
+        <div id="rowProducts" class="homeRow">PRODUCTOS</div>
+        <div id="rowCarts" class="homeRow admin">VER TODOS LOS CARRITOS</div>
+        <div id="rowRtProducts" class="homeRow">PRODUCTOS EN TIEMPO REAL</div>
+        <div id="rowAddProd" class="homeRow admin">AGREGAR UN PRODUCTO</div>
     </div>
 </div>
+
+
+<script type="module">
+    let rowCart = document.getElementById('rowCart');
+    let rowProducts = document.getElementById("rowProducts");
+    let rowCarts = document.getElementById("rowCarts");
+    let rowRtProducts = document.getElementById("rowRtProducts");
+    let rowAddProd = document.getElementById("rowAddProd");
+    let rowSeeUsers = document.getElementById("rowSeeUsers");
+
+    rowCart.addEventListener("click",()=>{
+        //window.location.href= '/views/realtimeproducts';
+        console.log("resta obtener el id de usuario, y con eso ir a buscar que carrito tiene.")
+    })
+
+    rowProducts.addEventListener('click',()=>{
+        window.location.href= '/views';
+    })
+
+    rowCarts.addEventListener('click',()=>{
+        window.location.href= '/api/carts';
+    })
+
+    rowRtProducts.addEventListener('click',()=>{
+        window.location.href= '/views/realtimeproducts';
+    })
+
+    rowAddProd.addEventListener('click',()=>{
+        
+    })
+
+    rowDeleteProd.addEventListener('click',()=>{
+        
+    })
+
+    rowSeeUsers.addEventListener('click',()=>{
+        
+    })
+
+
+</script>
