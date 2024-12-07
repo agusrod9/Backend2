@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import productsModel from '../dao/models/products.model.js';
 import cartsModel from '../dao/models/carts.model.js';
+import passport from '../middlewares/passport.mid.js';
 
 const router = Router();
 
@@ -21,9 +22,10 @@ router.get('/cart:cid', async(req,res)=>{
     res.status(200).render('cart', {cart, title: "Cart" });
 })
 
-router.get('/cart', async(req,res)=>{
-    //funciona porque mi modelo sería con un cart siempre. al comprarlo o borrarlo se borra. Nunca hay más de uno.
-    let cart = await cartsModel.find().populate({path: 'productList._id', model: productsModel}).lean(); 
+router.get('/cart', passport.authenticate('isOnline', {session:false}) ,async(req,res)=>{
+    const userId = req.user;
+
+    let cart = await cartsModel.find({userId : {_id: userId}, purchased : false}).populate({path: 'productList._id', model: productsModel}).lean(); 
     res.status(200).render('cart', {cart, title: "Cart"});
 })
 
