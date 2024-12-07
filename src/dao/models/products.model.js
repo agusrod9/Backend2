@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
     status : {type: Boolean, default: true},
     stock : {type: Number, default: 0},
     category : {type: String, required: true},
-    thumbnails : {type: Array, required: true}
+    thumbnails : {type: Array, defaut: []}
 });
 
 schema.plugin(mongoosePaginate);

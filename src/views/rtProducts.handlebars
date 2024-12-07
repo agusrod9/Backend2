@@ -1,3 +1,4 @@
+<img  id="homeIcon" src="../img/home.png" alt="Home">
 <div class="container">
     <h1>Real Time Products List</h1>
     <a class="goToCartAnchor" href="cart">
@@ -25,6 +26,12 @@
     const url = ''; // vacío para localhost
     const options = {};
     const socketClient = io(url, options);
+    let homeBtn = document.getElementById("homeIcon");
+
+    homeBtn.addEventListener("click",()=>{
+        window.location.href ='/';
+    });
+
 
     socketClient.on('connect', ()=>{
         console.log(`socket.io Server connected: ${url}`);

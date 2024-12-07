@@ -27,5 +27,9 @@ router.get('/cart', async(req,res)=>{
     res.status(200).render('cart', {cart, title: "Cart"});
 })
 
+router.get('/addProduct', (req,res)=>{
+    res.status(200).render('addProduct', {title: "Add new product"});
+})
+
 
 export default router;

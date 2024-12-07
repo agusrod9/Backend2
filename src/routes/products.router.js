@@ -71,7 +71,7 @@ async function createProduct(req, res){
         let process = await create(newProduct);
         if(process){
             socket.emit('newProd',process);
-            res.status(201).send({ error: null, data: process});
+            res.status(201).send({ error: null, message : 'PRODUCT ADDED SUCCESSFULLY', data: process});
         }else{
             res.status(500).send({ error: 'Internal Server Error', data: []});
         }

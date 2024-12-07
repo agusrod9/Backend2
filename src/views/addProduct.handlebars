@@ -1,0 +1,87 @@
+<img  id="homeIcon" src="../img/home.png" alt="Home">
+<div class="formContainer">
+    <h1>Add new Product</h1>
+    <form class="loginForm">
+        <input id="title" type="text" name="title" placeholder="Product Title" required>
+        <input id="description" type="text" name="description" placeholder="Description" required>
+        <input id="code" type="text" name="code" placeholder="Bar-Code" required>
+        <input id="price" type="text" name="price" placeholder="Price U$S" required>
+        <input id="stock" type="text" name="stock" placeholder="Stock quantity" required>
+        <input id="category" type="text" name="category" placeholder="Category" required>
+        <button id="addProdButton">Agregar</button>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+    let title = document.getElementById("title");
+    let description = document.getElementById("description");
+    let code = document.getElementById("code");
+    let price = document.getElementById("price");
+    let stock = document.getElementById("stock");
+    let category = document.getElementById("category");
+    let addBtn = document.getElementById("addProdButton");
+    let homeBtn = document.getElementById("homeIcon");
+
+    homeBtn.addEventListener("click",()=>{
+        window.location.href ='/';
+    })
+
+    addBtn.addEventListener("click", async(e)=>{
+        e.preventDefault();
+        if(title.value !="" && description.value !="" && code.value !="" && price.value !="" && stock.value !="" && category.value !=""){
+            try{
+                if(isNaN(code.value) || isNaN(price.value) || isNaN(stock.value)){
+                    throw new Error("Invalid data");
+                }
+
+                const data = {
+                    title: title.value,
+                    description: description.value,
+                    code : code.value,
+                    price : price.value,
+                    stock : stock.value,
+                    category : category.value
+                }
+                const opts = {
+                    method : "POST",
+                    headers : {"Content-Type" : "application/json"},
+                    body : JSON.stringify(data)
+                }
+                let response = await fetch("/api/products", opts);
+                response = await response.json();
+                
+                Swal.fire({
+                    position: "top-end",
+                    title: `${response.message}`,
+                    showConfirmButton: false,
+                    timer: 1800
+                });
+                setTimeout(()=>{
+                    title.value='';
+                    description.value='';
+                    code.value='';
+                    price.value='';
+                    stock.value='';
+                    category.value='';
+                    addBtn.value='';
+                }, 1800);
+        }catch(error){
+            Swal.fire({
+                position: "top-end",
+                title: `${error.message}`,
+                showConfirmButton: false,
+                timer: 1800
+            });
+        }
+        }else{
+            Swal.fire({
+                position: "top-end",
+                title: "Missing mandatory fields.",
+                showConfirmButton: false,
+                timer: 1800
+            });
+        }
+    })
+
+</script>
