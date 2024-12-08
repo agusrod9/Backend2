@@ -12,6 +12,16 @@ h1{
   font-size: 50px;
 }
 
+#homeLogout{
+  height: 30px;
+  width: 30px;
+  margin-top: 10px;
+}
+
+#homeLogoutP{
+  margin-top: 50px;
+}
+
 .container{
   background-color: transparent;
   width: 1200px;
