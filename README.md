@@ -1,15 +1,16 @@
 # [![CoderHouse](https://www.coderhouse.com/imgs/ch.svg)](https://www.coderhouse.com/)
 
-Programación Backend II: Diseño y Arquitectura Backend 70280
+Programación Backend II: Diseño y Arquitectura Backend 70280<br>
+Proyecto: Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
-Pre-entrega 2<br>
+Pre-entrega 2:<br>
 
 Comentarios: <br>
 -Implemento ambientes: DEV-TEST-PROD<br>
 -Implemento Commander<br>
 
 
-Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
+Pre-entrega 1:<br>
 
 -PARA PROBAR: <br>
 -https://drive.google.com/drive/folders/1YvCORLJgicKoEHuY4cYXDqb-tlUlI6Ka?usp=sharing
