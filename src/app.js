@@ -1,12 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import "dotenv/config.js";
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import MongoStore from 'connect-mongo';
-import session from 'express-session';
 import {Server} from 'socket.io';
 import config from './utils/config.js';
+import argsUtil from './utils/args.util.js';
+import envUtil from './utils/env.util.js';
 import handlebars from 'express-handlebars';
 import homeRouter from './routes/home.router.js';
 import prodsRouter from './routes/products.router.js';
@@ -19,7 +18,7 @@ import errorHandler from './middlewares/errorHandler.mid.js';
 
 
 //Environment variables
-const {PORT, MONGO_REMOTE_URI, COOKIES_SECRET, SESSION_SECRET} = process.env
+const {PORT, MONGO_REMOTE_URI, COOKIES_SECRET, MONGO_LOCAL_URI} = envUtil;
 
 //Server Instance
 const app = express();
@@ -70,18 +69,36 @@ socketServer.on('connection', socket => {
     })
 });
 
+
 //Server methods
 async function ready (){
-    console.log(`SERVER LISTENING ON PORT ${PORT}`);
-    await dbConnect();
+    console.log(`SERVER(mode:${argsUtil.env}) LISTENING ON PORT ${PORT}`);
+    if(argsUtil.persistence === 'mongo'){
+        await mongoDbConnect();
+    }else if(argsUtil.persistence === 'mongolocal'){
+        await mongoLocalConnect();
+    }else{
+        console.log('No conectado a mongo');
+        
+    }
 }
 
-async function dbConnect(){
+async function mongoDbConnect(){
     try{
         await mongoose.connect(MONGO_REMOTE_URI);
-        console.log("DATABASE CONNECTION : SUCCESS");
+        console.log("MONGO DB CONNECTION : SUCCESS");
     }catch{
-        console.log("DATABASE CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE");
+        console.log("MONGO DB CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE");
+        process.exit;
+    }
+}
+
+async function mongoLocalConnect(){
+    try{
+        await mongoose.connect(MONGO_LOCAL_URI);
+        console.log("MONGO ---LOCAL--- DB CONNECTION : SUCCESS");
+    }catch{
+        console.log("MONGO ---LOCAL--- DB CONNECTION : ERROR - COULD NOT CONNECT TO DATABASE");
         process.exit;
     }
 }

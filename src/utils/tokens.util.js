@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import envUtil from './env.util.js';
 
-const {TOKEN_SECRET} = process.env;
+const {TOKEN_SECRET} = envUtil;
 
 function createTokenUtil(data){
     const token = jwt.sign(data, TOKEN_SECRET, {expiresIn: 60*60*24}); 

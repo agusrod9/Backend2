@@ -2,6 +2,13 @@
 
 Programación Backend II: Diseño y Arquitectura Backend 70280
 
+Pre-entrega 2<br>
+
+Comentarios: <br>
+-Implemento ambientes: DEV-TEST-PROD<br>
+-Implemento Commander<br>
+
+
 Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
 -PARA PROBAR: <br>
@@ -16,7 +23,7 @@ Pre-entrega 1 - Continuación del [proyecto de Backend 1](https://github.com/agu
 
 
 Comentarios: <br>
--<br>
+<br>
 -Soluciono problema con sweet alert que dejó de funcionar en Login y realtimeproducts<br>
 -Soluciono problema con los socket emit que no permitía ver productos en tiempo real<br>
 -Implemento VISTA Home con menú, resta funcionalidad menú<br>

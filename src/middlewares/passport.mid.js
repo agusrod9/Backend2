@@ -5,8 +5,9 @@ import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { createHashUtil, verifyHashUtil } from "../utils/hash.util.js";
 import { create, readByEmail } from "../dao/managers/userManager.js";
 import { createTokenUtil } from "../utils/tokens.util.js";
+import envUtil from "../utils/env.util.js";
 
-const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL, TOKEN_SECRET} = process.env
+const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL, TOKEN_SECRET} = envUtil;
 
 passport.use("register", new LocalStrategy(
     { passReqToCallback: true, usernameField: "email" }, 
