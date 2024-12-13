@@ -3,15 +3,6 @@
 Programación Backend II: Diseño y Arquitectura Backend 70280<br>
 Proyecto: Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
-Pre-entrega 2:<br>
-
-Comentarios: <br>
--Implemento ambientes: DEV-TEST-PROD<br>
--Implemento Commander<br>
-
-
-Pre-entrega 1:<br>
-
 -PARA PROBAR: <br>
 -https://drive.google.com/drive/folders/1YvCORLJgicKoEHuY4cYXDqb-tlUlI6Ka?usp=sharing
 <br>
@@ -22,6 +13,14 @@ Pre-entrega 1:<br>
 -Adjunto proyecto Postman <br>
 -Adjunto archivo de variables de entorno (.env) <br>
 
+Entrega Final:<br>
+
+Comentarios: <br>
+-Implemento ambientes: DEV-TEST-PROD<br>
+-Implemento Commander<br>
+
+
+Pre-entrega 1:<br>
 
 Comentarios: <br>
 <br>
