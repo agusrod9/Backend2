@@ -39,14 +39,14 @@ async function readAllProductsPaginated(req,res){
         let {sort} = req.query;
         if(req.query.qry){
             let {qry} = req.query;
-            process = await readAllPaginated({title:{$regex: '.*' + qry + '.*'}},{limit:limit, page:page, sort: {price: sort}, lean:true});
+            process = await readAllPaginated({title:{$regex: '.*' + qry + '.*' , $options : 'i'}},{limit:limit, page:page, sort: {price: sort}, lean:true});
         }else{
             process = await readAllPaginated({},{limit:limit, page:page, sort: {price: sort}, lean:true});
         }
     }else{
         if(req.query.qry){
             let {qry} = req.query;
-            process = await readAllPaginated({title:{$regex: '.*' + qry + '.*'}},{limit:limit, page:page, lean:true});
+            process = await readAllPaginated({title:{$regex: '.*' + qry + '.*' , $options : 'i'}},{limit:limit, page:page, lean:true});
         }else{
             process = await readAllPaginated({},{limit:limit, page:page, lean:true});
         }
