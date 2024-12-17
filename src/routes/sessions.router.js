@@ -29,7 +29,7 @@ function login(req, res, next) {
     try {
         const message = 'USER LOGGED IN';
         const {token} = req;
-        const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
+        const cookieOpts = {maxAge: 60*60*24*1000, httpOnly: true, signed: true};
         return res.status(200).cookie('token', token, cookieOpts).json({message});
     } catch (error) {
         return next(error);
