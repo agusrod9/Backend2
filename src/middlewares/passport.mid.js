@@ -77,7 +77,7 @@ passport.use("logout", new JwtStrategy(
 ))
 
 passport.use("google", new GoogleStrategy(
-    { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}sessions/google/cb` },
+    { clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, passReqToCallback: true, callbackURL: `${API_BASE_URL}sessions/google/cb`},
     async (req, accessToken, refreshToken, profile, done)=>{
         try {
             const { id, given_name, family_name } = profile;
