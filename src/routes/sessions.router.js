@@ -36,7 +36,7 @@ function login(req, res, next) {
     }
 }
 
-async function isOnlineResponse(req, res, next) {
+function isOnlineResponse(req, res, next) {
     try {
         const message = 'USER ONLINE';
         return res.status(200).json({message});
@@ -60,18 +60,17 @@ async function logoutResponse(req, res, next) {
     }
 }
 
-async function isAdminResponse(req,res,next){
+function isAdminResponse(req,res,next){
     const message = 'USER IS ADMINISTRATOR';
     return res.status(200).json({message});
 }
 
-async function google(req,res,next){
+function google(req,res,next){
     try {
         const message = 'USER LOGGED IN';
         const {token} = req
         const cookieOpts = {maxAge: 60*60*24, httpOnly: true, signed: true};
         return res.status(200).cookie('token', token, cookieOpts).json({message});
-        //return res.status(200).cookie('token', token, cookieOpts).render('home');
     } catch (error) {
         return next(error);
     }
