@@ -51,7 +51,6 @@ app.use(errorHandler);
 app.engine('handlebars', handlebars.engine());
 app.set('views',`${config.dirName}/views`);
 app.set('view engine', 'handlebars');
-console.log(config.dirName);
 
 //Socket Server methods
 socketServer.on('connection', socket => {
@@ -73,12 +72,12 @@ socketServer.on('connection', socket => {
 //Server methods
 async function ready (){
     console.log(`SERVER(mode:${argsUtil.env}) LISTENING ON PORT ${PORT}`);
-    if(argsUtil.persistence === 'mongo'){
+    if(argsUtil.persistence === 'mongo'){ 
         await mongoDbConnect();
     }else if(argsUtil.persistence === 'mongolocal'){
         await mongoLocalConnect();
     }else{
-        console.log('No conectado a mongo');
+        await mongoDbConnect(); //conecta x defecto a mongo aunque no lo indiquemos en args. (ejemplo si ejecutamos directamente src/app con node)
         
     }
 }
