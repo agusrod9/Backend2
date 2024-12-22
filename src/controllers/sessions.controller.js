@@ -61,4 +61,9 @@ function google(req,res,next){
     }
 }
 
-export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register}
+function verifyCodeResponse(req, res, next){
+    const message = 'USER VERIFIED';
+    return res.status(200).json({message});
+}
+
+export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register, verifyCodeResponse}

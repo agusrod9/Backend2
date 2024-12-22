@@ -6,6 +6,8 @@ import { createHashUtil, verifyHashUtil } from "../utils/hash.util.js";
 import { create, readByEmail } from "../dao/managers/userManager.js";
 import { createTokenUtil } from "../utils/tokens.util.js";
 import envUtil from "../utils/env.util.js";
+import { sendVerificationEmail } from "../utils/nodemailer.util.js";
+import crypto from 'crypto';
 
 const {GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, API_BASE_URL, TOKEN_SECRET} = envUtil;
 
@@ -19,8 +21,11 @@ passport.use("register", new LocalStrategy(
             return done(error);
         }
         req.body.password = createHashUtil(password);
-        const data = req.body;
+        let data = req.body;
+        const verificationCode = crypto.randomBytes(12).toString('hex');
+        data = {...data, verificationCode};
         const newUsr = await create(data);
+        await sendVerificationEmail(newUsr.email, verificationCode);
         return done(null, newUsr);
 
     }
@@ -35,8 +40,13 @@ passport.use("login", new LocalStrategy(
             error.statusCode= 401;
             return done(error);
         }
-        const verifies = verifyHashUtil(password, user.password);
-        if(verifies){
+        if(!user.verifiedUser){
+            const error = new Error('USER MUST VERIFY MAIL FIRST');
+            error.statusCode= 401;
+            return done(error);
+        }
+        const passwordsMatch = verifyHashUtil(password, user.password);
+        if(passwordsMatch){
             req.token = createTokenUtil({user_id: user._id, role: user.role});
             return done(null, user);
         }

@@ -15,7 +15,9 @@ const envUtil = {
     MONGO_REMOTE_URI : process.env.MONGO_REMOTE_URI,
     PORT : process.env.PORT,
     SESSION_SECRET : process.env.SESSION_SECRET,
-    TOKEN_SECRET : process.env.TOKEN_SECRET
+    TOKEN_SECRET : process.env.TOKEN_SECRET,
+    GOOGLE_MAIL : process.env.GOOGLE_MAIL,
+    GOOGLE_PASS : process.env.GOOGLE_PASS
 };
 
 export default envUtil;
