@@ -66,4 +66,14 @@ function verifyCodeResponse(req, res, next){
     return res.status(200).json({message});
 }
 
-export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register, verifyCodeResponse}
+function sendTokenEmailResponse(req,res,next){
+    const message = 'RESET PASSWORD EMAIL SENT';
+    return res.status(200).json({message});
+}
+
+function confirmResetPasswordResponse(req, res, next){
+    const message = 'PASSWORD RESET SUCCESSFULLY';
+    return res.status(200).json({message});
+}
+
+export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register, verifyCodeResponse, sendTokenEmailResponse, confirmResetPasswordResponse}
