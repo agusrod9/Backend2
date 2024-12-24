@@ -20,6 +20,19 @@
     let rowCarts = document.getElementById("rowCarts");
     let rowRtProducts = document.getElementById("rowRtProducts");
     let rowAddProd = document.getElementById("rowAddProd");
+    let logout = document.getElementById('homeLogout');
+    let url = '';
+
+    logout.addEventListener("click", async()=>{
+        await fetch(`${url}/api/sessions/logout`, {
+                method: 'POST',
+                body: '',
+                headers: {
+                    "Content-type":"application/json"
+                }
+            });
+        window.location.href ='/';
+    })
 
     rowCart.addEventListener("click",()=>{
         window.location.href= '/views/cart';

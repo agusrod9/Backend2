@@ -5,7 +5,7 @@ import { readAllCarts, readCartById, createEmptyCart, addProductToCartById, dele
 
 const router = Router();
 
-router.get('/' , passport.authenticate('isAdmin', {session:false}),  readAllCarts)
+router.get('/' ,  readAllCarts)
 router.get('/:cid', readCartById);
 router.post('/', createEmptyCart);
 router.put('/:cid', addProductToCartById);

@@ -76,4 +76,9 @@ function confirmResetPasswordResponse(req, res, next){
     return res.status(200).json({message});
 }
 
-export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register, verifyCodeResponse, sendTokenEmailResponse, confirmResetPasswordResponse}
+function renderResetPasswordScreen(req, res, next){
+    let token = req.query.t;
+    return res.redirect(`/confirmPassword?t=${token}`);
+}
+
+export {google, isAdminResponse, logoutResponse, isOnlineResponse, login, register, verifyCodeResponse, sendTokenEmailResponse, confirmResetPasswordResponse, renderResetPasswordScreen}

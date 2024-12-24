@@ -56,7 +56,6 @@
     for(let i=0; i<cartIcons.length;i++){
         cartIcons[i].addEventListener('click', ()=>{
             let prodId= cartIcons[i].parentElement.id;
-            console.log(`Agrego producto al carrito: ${prodId}`);
             fetch(`${url}/api/carts`)
                 .then(res=>res.json())
                 .then(data=>{
