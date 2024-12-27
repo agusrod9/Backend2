@@ -4,18 +4,19 @@ Programación Backend II: Diseño y Arquitectura Backend 70280<br>
 Proyecto: Continuación del [proyecto de Backend 1](https://github.com/agusrod9/Backend1-PE1.git)
 
 -PARA PROBAR: <br>
--https://drive.google.com/drive/folders/1YvCORLJgicKoEHuY4cYXDqb-tlUlI6Ka?usp=sharing
-<br>
--Para probar las vistas, ingresar a localhost:8085 - El sistema redirigirá hacia login o register<br>
--Para probar con usuario Admin utilizar el ya creado testadmin@test.com con pass1234 como password <br>
--Para probar con usuario Admin utilizar el ya creado testuser@test.com con pass1234 como password <br>
-<br>
+-VARIABLES DE ENTORNO : https://drive.google.com/drive/folders/1YvCORLJgicKoEHuY4cYXDqb-tlUlI6Ka?usp=sharing<br>
 -Adjunto proyecto Postman <br>
--Adjunto archivo de variables de entorno (.env) <br>
+-Para probar las vistas, ingresar a localhost:8085 - El sistema redirigirá hacia login o register<br>
+-Para poder logearse hay que registrarse con un MAIL REAL, ya que se recibe un link para verificar el usuario.<br>
+-Para probar funciones de ADMIN utilizar --> agusrod9@gmail.com , pass1234
+<br>
 
 Entrega Final:<br>
 
 Comentarios: <br>
+-Fixes varios en las vistas, sobre todo carrito con lógica nueva<br>
+-Para logearse hay que verificar el usuario primero, ingresando al enlace que envío en el correo <br>
+-Implemento e-mail con verificación de usuario para el registro <br>
 -Implemento ambientes: DEV-TEST-PROD<br>
 -Implemento Commander<br>
 
